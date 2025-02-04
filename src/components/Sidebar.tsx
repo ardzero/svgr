@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Menu, X, Github, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/data";
@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function Sidebar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
-	const categories = getCategories();
+	const categories = useMemo(() => getCategories().sort(), []);
 
 	// Get category counts
 	const categoryCounts: Record<string, number> = {};
@@ -18,6 +18,9 @@ export function Sidebar() {
 		).length;
 	});
 
+	// Add total count for "All SVGs"
+	const totalCount = svgsData.length;
+
 	// Sync with URL params
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
@@ -25,26 +28,28 @@ export function Sidebar() {
 		setActiveCategory(category);
 	}, []);
 
-	const handleCategoryClick = (category: string) => {
+	const handleCategoryClick = (category: string | null) => {
 		const params = new URLSearchParams(window.location.search);
 
 		if (activeCategory === category) {
 			params.delete("cat");
 			setActiveCategory(null);
 		} else {
-			params.set("cat", category);
+			if (category) {
+				params.set("cat", category);
+			} else {
+				params.delete("cat");
+			}
 			setActiveCategory(category);
 		}
 
-		// Update URL without page reload
 		const newUrl = params.toString()
 			? `${window.location.pathname}?${params.toString()}`
 			: window.location.pathname;
 		window.history.pushState({}, "", newUrl);
 
-		// Dispatch custom event for SvgList to handle
 		window.dispatchEvent(new Event("urlchange"));
-		setIsOpen(false); // Close mobile sidebar after selection
+		setIsOpen(false);
 	};
 
 	// Close sidebar on mobile when clicking outside
@@ -97,6 +102,29 @@ export function Sidebar() {
 				{/* Categories */}
 				<nav className="h-[calc(100vh-8rem)] overflow-y-auto p-4">
 					<ul className="space-y-2">
+						{/* All SVGs option */}
+						<li>
+							<Button
+								variant="ghost"
+								className={cn(
+									"w-full justify-between font-normal",
+									activeCategory === null && "bg-muted",
+								)}
+								onClick={() => handleCategoryClick(null)}
+							>
+								<span>All SVGs</span>
+								<span className="text-xs text-muted-foreground">
+									{totalCount}
+								</span>
+							</Button>
+						</li>
+
+						{/* Divider */}
+						<li className="my-2">
+							<div className="h-px bg-border" />
+						</li>
+
+						{/* Categories list */}
 						{categories.map((category) => (
 							<li key={category}>
 								<Button
