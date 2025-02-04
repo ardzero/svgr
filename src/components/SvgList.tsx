@@ -71,12 +71,17 @@ export function SvgList({ className }: TSvgList) {
 	useEffect(() => {
 		const isUrlSearch = window.location.search.includes("search=");
 		if (searchTerm === "" && !isUrlSearch) {
-			setIsLoading(true);
-			const timer = setTimeout(() => {
+			// Only show loading state on initial load, not during sorting
+			if (!displaySvgs.length) {
+				setIsLoading(true);
+				const timer = setTimeout(() => {
+					updateDisplaySvgs();
+					setIsLoading(false);
+				}, 500);
+				return () => clearTimeout(timer);
+			} else {
 				updateDisplaySvgs();
-				setIsLoading(false);
-			}, 500);
-			return () => clearTimeout(timer);
+			}
 		}
 		updateDisplaySvgs();
 	}, [searchTerm, sorted, showAll]);
