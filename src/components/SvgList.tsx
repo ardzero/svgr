@@ -190,11 +190,7 @@ export function SvgList({ className }: TSvgList) {
 									if (grid && header) {
 										const headerHeight = header.getBoundingClientRect().height;
 										window.scrollTo({
-											top:
-												grid.getBoundingClientRect().top +
-												window.scrollY -
-												headerHeight -
-												55,
+											top: 0,
 											behavior: "instant",
 										});
 									}
