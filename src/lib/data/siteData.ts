@@ -4,16 +4,17 @@ import type { TSiteData, TtwitterMetaData, TMetadataIcons } from "@/types";
 // in webmanifest, theme_color is the color of the app icon's background and
 export const siteData: TSiteData = {
     favicon: "/favicon.svg", // .svg / .ico / .png
-    name: "Bunestro - Astro v5 Bun Starter",
-    shortName: "Bunestro",
-    publisher: "bunestro.ardastroid.com",
-    baseUrl: import.meta.env.SITE, //"bunestro.vercel.app"
+    name: "Svgr (svg registry) - An open source svg logo list/registry",
+    shortName: "Svgr (svg registry)",
+    publisher: "ardzero.com",
+    baseUrl: "svgr.ardzero.com", //"svgr.vercel.app"
     description:
-        "Bunestro is a astro v5 starter template with tailwindcss, shadcn and some other cool feature that runs on bun or node",
-    ogImage: { src: "/ogImage.png", alt: "Bunestro", width: 1200, height: 630 },
+        "Svgr (svg registry) is a open source svg logo list/registry built on top of Astro and react",
+    ogImage: { src: "/ogImage.webp", alt: "svgr", width: 1200, height: 630 },
+
     metadata_color: {
-        light: "#3A86FF",
-        dark: "#3A86FF",
+        light: "#c5beb2",
+        dark: "#f9f0e0",
     },
     author: {
         name: "darkidop",
@@ -24,9 +25,19 @@ export const siteData: TSiteData = {
         "React",
         "Tailwind CSS",
         "Bun",
-        "Shadcn UI",
         "TypeScript",
-        "Zod",
+        "Svgr",
+        "Svg registry",
+        "Svg logo list",
+        "Svg logo registry",
+        "svg",
+        "logo",
+        "list",
+        "open source",
+        "open source project",
+        "open source svg logo list",
+        "open source svg logo registry",
+        "svg logo list",
     ],
 
     robotsDefault: "index, follow", // { index: false, follow: false }
@@ -40,7 +51,7 @@ export const twitterMetaData: TtwitterMetaData = {
     title: siteData.name,
     description: siteData.description,
     image: siteData.ogImage.src,
-    creator: "@darkidop", //twitter username of author
+    creator: "@ardastroid", //twitter username of author
 };
 
 // By default, it uses the favicon mentioned at the top
