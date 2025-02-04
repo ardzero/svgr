@@ -107,17 +107,17 @@ export function SvgList({ className }: TSvgList) {
 	const hasMoreResults = !showAll && searchResults.length > 30;
 
 	return (
-		<div className={cn("min-h-screen w-full", className)}>
-			<div className="sticky top-0 z-50 mb-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+		<div className={cn("w-full", className)}>
+			<div className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 				<SearchBar
 					count={allSvgs.length}
 					setSearchTerm={setSearchTerm}
 					searchTerm={searchTerm}
-					className="[&_input:focus]:ring-opacity-25 container py-4"
+					className="[&_input:focus]:ring-opacity-25 px-4 py-4 lg:px-6"
 				/>
 			</div>
 
-			<section className="container mx-auto mb-10">
+			<section className="mx-auto px-4 lg:px-6">
 				<div
 					className={cn(
 						"mb-4 flex items-center justify-end",

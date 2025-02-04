@@ -20,6 +20,7 @@ const { pageLoader = true }: Props = Astro.props;
 import { ModeToggle } from "@/components/ui/theme-selector";
 import { ScrollToTopButton } from "@/components/utils/TopButton";
 import { Toaster } from "@/components/ui/toaster";
+import { Sidebar } from "@/components/Sidebar";
 ---
 
 <!doctype html>
@@ -70,17 +71,21 @@ import { Toaster } from "@/components/ui/toaster";
 		<Metadata {...Astro.props} />
 	</head>
 	<body>
-		<ScrollToTopButton client:load className="fixed right-4 bottom-4 z-50" />
-		<main>
-			<slot />
-		</main>
-		<ModeToggle
-			client:load
-			className="fixed bottom-2 left-2 z-50"
-			iconClassName="size-3"
-		/>
-		<Toaster client:load />
-		{pageLoader && <PageLoader />}
+		<div class="flex min-h-screen">
+			<Sidebar client:load />
+			<div class="flex-1 lg:pl-64">
+				<main class="min-h-screen">
+					<slot />
+				</main>
+				<ModeToggle
+					client:load
+					className="fixed bottom-2 left-2 z-50 lg:left-[17rem]"
+					iconClassName="size-3"
+				/>
+				<Toaster client:load />
+				{pageLoader && <PageLoader />}
+			</div>
+		</div>
 	</body>
 </html>
 
