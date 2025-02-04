@@ -162,7 +162,7 @@ export function SvgList({ className }: TSvgList) {
 					)}
 				</div>
 
-				{hasMoreResults && (
+				{hasMoreResults ? (
 					<div
 						className={cn(
 							"relative z-16 grid w-full place-items-center items-end bg-gradient-to-t from-background from-30% to-transparent",
@@ -179,6 +179,35 @@ export function SvgList({ className }: TSvgList) {
 							<span>({searchResults.length - 30} more)</span>
 						</Button>
 					</div>
+				) : (
+					showAll &&
+					searchResults.length > 30 && (
+						<div className="sticky bottom-4 mt-8 grid w-full place-items-center">
+							<Button
+								onClick={() => {
+									const grid = document.querySelector(".grid");
+									const header = document.querySelector(".sticky.top-0");
+									if (grid && header) {
+										const headerHeight = header.getBoundingClientRect().height;
+										window.scrollTo({
+											top:
+												grid.getBoundingClientRect().top +
+												window.scrollY -
+												headerHeight -
+												55,
+											behavior: "instant",
+										});
+									}
+									setShowAll(false);
+								}}
+								className="pointer-events-auto rounded-full shadow-lg"
+								variant="outline"
+							>
+								<ArrowDown className="size-3 rotate-180" />
+								<span className="font-semibold">Show Less</span>
+							</Button>
+						</div>
+					)
 				)}
 			</section>
 		</div>

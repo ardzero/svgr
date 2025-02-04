@@ -3,7 +3,7 @@ import type { iSVG } from "@/types/svg";
 import { useState, useEffect } from "react";
 import { getSvgContent } from "@/lib/utils/getSvgContent";
 import {
-	Link,
+	ArrowUpRight,
 	ChevronsRight,
 	Baseline,
 	Sparkles,
@@ -183,7 +183,7 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 					rel="noopener noreferrer"
 					className={btnStyles}
 				>
-					<Link size={iconSize} strokeWidth={iconStroke} />
+					<ArrowUpRight size={iconSize} strokeWidth={iconStroke} />
 				</a>
 
 				{svg.wordmark && (
