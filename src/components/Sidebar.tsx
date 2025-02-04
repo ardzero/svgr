@@ -1,88 +1,70 @@
 import { useState, useEffect, useMemo } from "react";
-import { Menu, X, Github, Twitter } from "lucide-react";
+import { Menu, X, Github, Globe, Search, Twitter } from "lucide-react";
+import Fuse from "fuse.js";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { getCategories } from "@/lib/data";
 import { svgsData } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 export function Sidebar() {
 	const [isOpen, setIsOpen] = useState(false);
+	const [search, setSearch] = useState("");
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+	// Memoize core data
 	const categories = useMemo(() => getCategories().sort(), []);
+	const fuse = useMemo(
+		() =>
+			new Fuse(categories, {
+				threshold: 0.3,
+				distance: 100,
+			}),
+		[categories],
+	);
 
-	// Memoize category counts to prevent recalculation on re-renders
-	const { categoryCounts, totalCount } = useMemo(() => {
+	const { categoryCounts, totalCount, filteredCategories } = useMemo(() => {
 		const counts: Record<string, number> = {};
-		categories.forEach((category) => {
-			counts[category] = svgsData.filter((svg) =>
-				svg.category.includes(category),
-			).length;
+		categories.forEach((cat) => {
+			counts[cat] = svgsData.filter((svg) => svg.category.includes(cat)).length;
 		});
-		return { categoryCounts: counts, totalCount: svgsData.length };
-	}, [categories]);
 
-	// Sync with URL params and listen for URL changes
+		const filtered = search
+			? fuse.search(search).map((result) => result.item)
+			: categories;
+
+		return {
+			categoryCounts: counts,
+			totalCount: svgsData.length,
+			filteredCategories: filtered,
+		};
+	}, [categories, search]);
+
+	// URL sync effect
 	useEffect(() => {
 		const syncCategory = () => {
-			const params = new URLSearchParams(window.location.search);
-			const category = params.get("cat");
+			const category = new URLSearchParams(window.location.search).get("cat");
 			setActiveCategory(category);
 
-			// Scroll active category into view
 			if (category) {
 				requestAnimationFrame(() => {
-					const element = document.querySelector(
-						`[data-category="${category}"]`,
-					);
-					element?.scrollIntoView({ behavior: "smooth", block: "center" });
+					document
+						.querySelector(`[data-category="${category}"]`)
+						?.scrollIntoView({ behavior: "smooth", block: "center" });
 				});
 			}
 		};
 
-		// Initial sync
 		syncCategory();
-
-		// Use a single event listener with event delegation
-		const handleUrlChange = (event: Event) => {
-			syncCategory();
-		};
-
-		window.addEventListener("urlchange", handleUrlChange);
-		window.addEventListener("popstate", handleUrlChange);
-
-		return () => {
-			window.removeEventListener("urlchange", handleUrlChange);
-			window.removeEventListener("popstate", handleUrlChange);
-		};
+		const events = ["urlchange", "popstate"];
+		events.forEach((e) => window.addEventListener(e, syncCategory));
+		return () =>
+			events.forEach((e) => window.removeEventListener(e, syncCategory));
 	}, []);
 
-	const handleCategoryClick = (category: string | null) => {
-		const params = new URLSearchParams(window.location.search);
-
-		if (activeCategory === category) {
-			params.delete("cat");
-			setActiveCategory(null);
-		} else {
-			if (category) {
-				params.set("cat", category);
-			} else {
-				params.delete("cat");
-			}
-			setActiveCategory(category);
-		}
-
-		const newUrl = params.toString()
-			? `${window.location.pathname}?${params.toString()}`
-			: window.location.pathname;
-		window.history.pushState({}, "", newUrl);
-
-		window.dispatchEvent(new Event("urlchange"));
-		setIsOpen(false);
-	};
-
-	// Close sidebar on mobile when clicking outside
+	// Click outside effect
 	useEffect(() => {
-		const handleClickOutside = (e: MouseEvent) => {
+		const handler = (e: MouseEvent) => {
 			const sidebar = document.getElementById("sidebar");
 			const toggle = document.getElementById("sidebar-toggle");
 			if (
@@ -96,9 +78,29 @@ export function Sidebar() {
 			}
 		};
 
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => document.removeEventListener("mousedown", handleClickOutside);
+		document.addEventListener("mousedown", handler);
+		return () => document.removeEventListener("mousedown", handler);
 	}, [isOpen]);
+
+	const handleCategoryClick = (category: string | null) => {
+		const params = new URLSearchParams(window.location.search);
+
+		if (activeCategory === category) {
+			params.delete("cat");
+			setActiveCategory(null);
+		} else {
+			category ? params.set("cat", category) : params.delete("cat");
+			setActiveCategory(category);
+		}
+
+		// Clear search when selecting a category
+		setSearch("");
+
+		const newUrl = `${window.location.pathname}${params.toString() ? `?${params}` : ""}`;
+		window.history.pushState({}, "", newUrl);
+		window.dispatchEvent(new Event("urlchange"));
+		setIsOpen(false);
+	};
 
 	return (
 		<>
@@ -116,9 +118,11 @@ export function Sidebar() {
 			{/* Sidebar */}
 			<aside
 				id="sidebar"
-				className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r bg-background/75 backdrop-blur-lg transition-transform md:bg-background/95 md:backdrop-blur-none lg:translate-x-0 ${
-					isOpen ? "translate-x-0" : "-translate-x-full"
-				}`}
+				className={cn(
+					"fixed inset-y-0 left-0 z-40 w-64 transform border-r bg-background/75",
+					"backdrop-blur-lg transition-transform md:bg-background/95 md:backdrop-blur-none lg:translate-x-0",
+					!isOpen && "-translate-x-full",
+				)}
 			>
 				{/* Header */}
 				<div className="flex min-h-16 items-center border-b px-16 lg:px-6">
@@ -133,7 +137,16 @@ export function Sidebar() {
 				{/* Categories Container */}
 				<div className="flex h-[calc(100vh-4rem)] flex-col">
 					{/* Sticky All SVGs */}
-					<div className="bg-background/95 px-4 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+					<div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/20">
+						<div className="relative mb-2">
+							<Search className="absolute top-2.5 left-2 size-4 text-muted-foreground" />
+							<Input
+								placeholder={`Search ${categories.length} categories...`}
+								value={search}
+								onChange={(e) => setSearch(e.target.value)}
+								className="pl-8 text-sm"
+							/>
+						</div>
 						<Button
 							variant="ghost"
 							className={cn(
@@ -152,7 +165,7 @@ export function Sidebar() {
 					{/* Scrollable Categories */}
 					<nav className="flex-1 overflow-y-auto p-3">
 						<ul className="space-y-0.5 pb-10">
-							{categories.map((category) => (
+							{filteredCategories.map((category) => (
 								<li key={category}>
 									<Button
 										variant="ghost"
@@ -181,16 +194,30 @@ export function Sidebar() {
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-muted-foreground hover:text-foreground"
+						title="Project GitHub"
 					>
 						<Github size={20} />
+						<span className="sr-only">Project GitHub</span>
 					</a>
 					<a
 						href="https://x.com/ardastroid"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-muted-foreground hover:text-foreground"
+						title="Author Twitter"
 					>
 						<Twitter size={20} />
+						<span className="sr-only">Author Twitter</span>
+					</a>
+					<a
+						href="https://ardastroid.com/links"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-muted-foreground hover:text-foreground"
+						title="Author Website"
+					>
+						<Globe size={20} />
+						<span className="sr-only">Author Website</span>
 					</a>
 				</div>
 			</aside>

@@ -151,7 +151,7 @@ export function SvgList({ className }: TSvgList) {
 
 	return (
 		<div className={cn("w-full", className)}>
-			<div className="sticky top-0 z-30 flex min-h-16 flex-col justify-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+			<div className="sticky top-0 z-30 flex min-h-16 flex-col justify-center border-b bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/70">
 				<SearchBar
 					count={filteredSvgs.length}
 					setSearchTerm={setSearchTerm}
