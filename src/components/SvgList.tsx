@@ -10,6 +10,7 @@ import { SvgCard } from "@/components/SvgCard";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/SearchBar";
 import { SkeletonCard } from "@/components/SkeletonCard";
+import type { Tcategory } from "@/types/categories";
 type TSvgList = {
 	className?: string;
 };
@@ -21,75 +22,107 @@ export function SvgList({ className }: TSvgList) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 	const [sorted, setSorted] = useState(false);
+	const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
 	// Memoized data
 	const allSvgs = useMemo(() => JSON.parse(JSON.stringify(svgsData)), []);
+
+	// Handle URL params and initial data load
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const search = params.get("search") || "";
+		const category = params.get("cat");
+
+		setSearchTerm(search);
+		setActiveCategory(category);
+
+		// Always limit to 30 items initially, regardless of category or search
+		const filtered = getFilteredSvgs(search, category);
+		setDisplaySvgs(filtered.slice(0, 30));
+		setShowAll(false); // Reset showAll when changing category
+		setIsLoading(false);
+	}, []);
+
+	// Filter SVGs based on category
+	const filteredSvgs = useMemo(() => {
+		if (!activeCategory) return allSvgs;
+		return allSvgs.filter((svg: iSVG) =>
+			svg.category.includes(activeCategory as Tcategory),
+		);
+	}, [allSvgs, activeCategory]);
+
+	// Sort SVGs
 	const sortedSvgs = useMemo(
 		() => ({
-			latest: [...allSvgs].sort((a, b) => b.id! - a.id!),
-			alphabetical: [...allSvgs].sort((a, b) => a.title.localeCompare(b.title)),
+			latest: [...filteredSvgs].sort((a, b) => b.id! - a.id!),
+			alphabetical: [...filteredSvgs].sort((a, b) =>
+				a.title.localeCompare(b.title),
+			),
 		}),
-		[allSvgs],
+		[filteredSvgs],
 	);
 
+	// Fuse instance for search
 	const fuse = useMemo(
 		() =>
-			new Fuse<iSVG>(allSvgs, {
+			new Fuse<iSVG>(filteredSvgs, {
 				keys: ["title"],
 				threshold: 0.35,
 				ignoreLocation: true,
 				isCaseSensitive: false,
 				shouldSort: true,
 			}),
-		[allSvgs],
+		[filteredSvgs],
 	);
 
-	// Search function with hybrid strategy
-	const searchSvgs = (term: string) => {
-		if (!term) return sorted ? sortedSvgs.alphabetical : sortedSvgs.latest;
+	// Search function
+	const getFilteredSvgs = (term: string, category: string | null = null) => {
+		const baseList = sorted ? sortedSvgs.alphabetical : sortedSvgs.latest;
+
+		if (!term) return baseList;
 
 		return term.length < 3
-			? allSvgs.filter((svg: iSVG) =>
+			? filteredSvgs.filter((svg: iSVG) =>
 					svg.title.toLowerCase().includes(term.toLowerCase()),
 				)
 			: fuse.search(term).map((result) => result.item);
 	};
 
-	// Handle URL search params
+	// Handle URL changes
 	useEffect(() => {
-		const params = new URLSearchParams(window.location.search);
-		const search = params.get("search");
-		if (search) {
+		const handleUrlChange = () => {
+			const params = new URLSearchParams(window.location.search);
+			const search = params.get("search") || "";
+			const category = params.get("cat");
+
 			setSearchTerm(search);
-			const filtered = searchSvgs(search);
-			setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
-			setIsLoading(false);
-		}
+			setActiveCategory(category);
+
+			const filtered = getFilteredSvgs(search, category);
+			// Reset to showing only 30 items when category changes
+			setDisplaySvgs(filtered.slice(0, 30));
+			setShowAll(false);
+		};
+
+		window.addEventListener("urlchange", handleUrlChange);
+		return () => window.removeEventListener("urlchange", handleUrlChange);
 	}, []);
 
-	// Update displayed SVGs
+	// Update displayed SVGs when filters change
 	useEffect(() => {
-		const isUrlSearch = window.location.search.includes("search=");
-		if (searchTerm === "" && !isUrlSearch) {
-			// Only show loading state on initial load, not during sorting
-			if (!displaySvgs.length) {
-				setIsLoading(true);
-				const timer = setTimeout(() => {
-					updateDisplaySvgs();
-					setIsLoading(false);
-				}, 500);
-				return () => clearTimeout(timer);
-			} else {
-				updateDisplaySvgs();
-			}
-		}
-		updateDisplaySvgs();
-	}, [searchTerm, sorted, showAll]);
+		const filtered = getFilteredSvgs(searchTerm, activeCategory);
+		setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
+	}, [searchTerm, sorted, showAll, activeCategory]);
 
-	// Update URL search param
+	// Update URL search params
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
-		searchTerm ? params.set("search", searchTerm) : params.delete("search");
+
+		if (searchTerm) {
+			params.set("search", searchTerm);
+		} else {
+			params.delete("search");
+		}
 
 		const newUrl = params.toString()
 			? `${window.location.pathname}?${params.toString()}`
@@ -98,26 +131,34 @@ export function SvgList({ className }: TSvgList) {
 		window.history.replaceState({}, "", newUrl);
 	}, [searchTerm]);
 
-	const updateDisplaySvgs = () => {
-		const filtered = searchSvgs(searchTerm);
-		setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
-	};
+	// Add useEffect for keyboard shortcut
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if ((e.ctrlKey || e.metaKey) && e.key === "x") {
+				e.preventDefault();
+				setSearchTerm("");
+			}
+		};
 
-	const searchResults = searchSvgs(searchTerm);
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, []);
+
+	const searchResults = getFilteredSvgs(searchTerm, activeCategory);
 	const hasMoreResults = !showAll && searchResults.length > 30;
 
 	return (
-		<div className={cn("min-h-screen w-full", className)}>
-			<div className="sticky top-0 z-50 mb-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+		<div className={cn("w-full", className)}>
+			<div className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 				<SearchBar
-					count={allSvgs.length}
+					count={filteredSvgs.length}
 					setSearchTerm={setSearchTerm}
 					searchTerm={searchTerm}
-					className="[&_input:focus]:ring-opacity-25 container py-4"
+					className="[&_input:focus]:ring-opacity-25 px-4 py-4 lg:px-6"
 				/>
 			</div>
 
-			<section className="container mx-auto mb-10">
+			<section className="mx-auto mt-2 mb-4 px-4 lg:px-6">
 				<div
 					className={cn(
 						"mb-4 flex items-center justify-end",
@@ -125,13 +166,17 @@ export function SvgList({ className }: TSvgList) {
 					)}
 				>
 					{searchTerm.length > 0 && displaySvgs.length > 0 && (
-						<button
-							className="flex items-center justify-center space-x-1 rounded-md py-1.5 text-sm font-medium opacity-80 transition-opacity hover:opacity-100"
+						<Button
+							variant="ghost"
 							onClick={() => setSearchTerm("")}
+							className="pr-2 pl-4"
 						>
-							<Trash size={16} strokeWidth={2} className="mr-1" />
-							<span>Clear results</span>
-						</button>
+							<Trash size={16} strokeWidth={2} />
+							Clear results{" "}
+							<span className="rounded-md border border-border p-1 px-2 text-xs">
+								⌘ + X
+							</span>
+						</Button>
 					)}
 
 					{!searchTerm && displaySvgs.length > 0 && (
@@ -165,7 +210,7 @@ export function SvgList({ className }: TSvgList) {
 				{hasMoreResults ? (
 					<div
 						className={cn(
-							"relative z-16 grid w-full place-items-center items-end bg-gradient-to-t from-background from-30% to-transparent",
+							"pointer-events-none relative z-16 grid w-full place-items-center items-end bg-gradient-to-t from-background from-30% to-transparent",
 							"-mt-[7rem] h-36",
 						)}
 					>
@@ -182,18 +227,13 @@ export function SvgList({ className }: TSvgList) {
 				) : (
 					showAll &&
 					searchResults.length > 30 && (
-						<div className="sticky bottom-4 mt-8 grid w-full place-items-center">
+						<div className="pointer-events-none sticky bottom-4 mt-8 grid w-full place-items-center">
 							<Button
 								onClick={() => {
-									const grid = document.querySelector(".grid");
-									const header = document.querySelector(".sticky.top-0");
-									if (grid && header) {
-										const headerHeight = header.getBoundingClientRect().height;
-										window.scrollTo({
-											top: 0,
-											behavior: "instant",
-										});
-									}
+									window.scrollTo({
+										top: 0,
+										behavior: "instant",
+									});
 									setShowAll(false);
 								}}
 								className="pointer-events-auto rounded-full shadow-lg"

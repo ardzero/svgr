@@ -15,7 +15,13 @@ import {
 
 // import DownloadSvg from "@/components/DownloadSvg";
 // import CopySvg from "@/components/CopySvg";
-import { Popover } from "@/components/ui/popover";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { CopyToClipboard } from "@/components/CardActions/CopyToClipboard";
+import { Button } from "./ui/button";
 
 type TSvgCard = {
 	className?: string;
@@ -43,13 +49,23 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 		// Implement your Figma insert logic here
 	};
 
-	const iconStroke = 1.8;
-	const iconSize = 16;
+	const iconStroke = 2;
+	const iconSize = 13;
 	const maxVisibleCategories = 1;
-
+	const btnStyles = "";
 	const globalImageStyles = "mb-4 mt-2 h-10 select-none pointer-events-none";
-	const btnStyles =
-		"flex items-center space-x-2 rounded-md p-2 duration-100 hover:bg-neutral-200 dark:hover:bg-neutral-700/40";
+	const tagesClassName =
+		"rounded-md border border-border px-2 py-1 text-xs hover:bg-muted";
+
+	const handleCategoryClick = (category: string, e: React.MouseEvent) => {
+		e.preventDefault();
+		const params = new URLSearchParams(window.location.search);
+		params.set("cat", category);
+
+		const newUrl = `${window.location.pathname}?${params.toString()}`;
+		window.history.pushState({}, "", newUrl);
+		window.dispatchEvent(new Event("urlchange"));
+	};
 
 	return (
 		<div
@@ -116,18 +132,51 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 								.map((category, index) => (
 									<a
 										key={index}
-										href={`/directory/${category.toLowerCase()}`}
+										href={`?cat=${category}`}
+										onClick={(e) => handleCategoryClick(category, e)}
 										title={`This icon is part of the ${category} category`}
+										className={tagesClassName}
 									>
 										{category}
 									</a>
 								))}
 							{svg.category.length > maxVisibleCategories && (
-								<Popover>{/* Implement your Popover content here */}</Popover>
+								<Popover>
+									<PopoverTrigger>
+										<button className={tagesClassName}>...</button>
+									</PopoverTrigger>
+									<PopoverContent
+										title="Categories"
+										className="bg-muted/50 backdrop-blur-2xl"
+									>
+										<h4 className="mb-2 text-xs font-medium">
+											Other categories
+										</h4>
+										<div className="flex flex-wrap gap-2">
+											{svg.category
+												.slice(1, svg.category.length)
+												.map((category, index) => (
+													<a
+														key={index}
+														href={`?cat=${category}`}
+														onClick={(e) => handleCategoryClick(category, e)}
+														title={`This icon is part of the ${category} category`}
+														className={tagesClassName}
+													>
+														{category}
+													</a>
+												))}
+										</div>
+									</PopoverContent>
+								</Popover>
 							)}
 						</>
 					) : (
-						<a href={`/directory/${svg.category.toLowerCase()}`}>
+						<a
+							href={`?cat=${svg.category}`}
+							onClick={(e) => handleCategoryClick(svg.category as string, e)}
+							className={tagesClassName}
+						>
 							{svg.category}
 						</a>
 					)}
@@ -136,8 +185,8 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 
 			{/* Actions */}
 			<div className="flex items-center space-x-1">
-				{isInFigma && (
-					<button
+				{/* {isInFigma && (
+					<Button
 						title="Insert to figma"
 						onClick={() => {
 							const svgHasTheme = typeof svg.route !== "string";
@@ -158,17 +207,16 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 						className={btnStyles}
 					>
 						<ChevronsRight size={iconSize} strokeWidth={iconStroke} />
-					</button>
-				)}
+					</Button>
+				)} */}
 
-				{/* <CopySvg
-					iconSize={iconSize}
+				<CopyToClipboard
 					iconStroke={iconStroke}
-					svg={svg}
-					isInFigma={false}
+					svgInfo={svg}
 					isWordmarkSvg={wordmarkSvg && svg.wordmark !== undefined}
 				/>
 
+				{/*
 				<DownloadSvg
 					svg={svg}
 					isDarkTheme={() =>
@@ -176,40 +224,44 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 					}
 				/> */}
 
-				<a
+				<Button
 					href={svg.url}
 					title="Website"
 					target="_blank"
 					rel="noopener noreferrer"
 					className={btnStyles}
+					variant={"ghost"}
+					size={"icon"}
 				>
 					<ArrowUpRight size={iconSize} strokeWidth={iconStroke} />
-				</a>
+				</Button>
 
 				{svg.wordmark && (
-					<button
+					<Button
 						title={wordmarkSvg ? "Show logo SVG" : "Show wordmark SVG"}
 						onClick={() => setWordmarkSvg(!wordmarkSvg)}
 						className={btnStyles}
+						variant={"ghost"}
+						size={"icon"}
 					>
 						{wordmarkSvg ? (
 							<Sparkles size={iconSize} strokeWidth={iconStroke} />
 						) : (
 							<Baseline size={iconSize} strokeWidth={iconStroke} />
 						)}
-					</button>
+					</Button>
 				)}
 
 				{svg.brandUrl && (
-					<a
-						href={svg.brandUrl}
+					<Button
 						title="Brand Assets"
-						target="_blank"
-						rel="noopener noreferrer"
+						onClick={() => window.open(svg.brandUrl, "_blank")}
 						className={btnStyles}
+						variant={"ghost"}
+						size={"icon"}
 					>
 						<Palette size={iconSize} strokeWidth={iconStroke} />
-					</a>
+					</Button>
 				)}
 			</div>
 		</div>
