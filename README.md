@@ -5,7 +5,7 @@
 An open source svg directory with fuzzy search build with Astro and react. [Live deployment](https://svgr.ardastroid.com/)
 Repo: [Github Repo](https://github.com/ardzero/svgr)
 
-> Some part of this is based on [Svgl](https://github.com/pheralb/svgl). I wanned a version on react and astro with some difference features and slightly different ui.
+> A large portion of this is based on [Svgl](https://github.com/pheralb/svgl). I wanned a version built on react and astro with some difference features and slightly different ui.
 
 ## Usage (run locally)
 
