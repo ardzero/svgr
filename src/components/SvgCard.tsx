@@ -15,7 +15,11 @@ import {
 
 // import DownloadSvg from "@/components/DownloadSvg";
 // import CopySvg from "@/components/CopySvg";
-import { Popover } from "@/components/ui/popover";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import { CopyToClipboard } from "@/components/CardActions/CopyToClipboard";
 import { Button } from "./ui/button";
 
@@ -47,7 +51,7 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 
 	const iconStroke = 2;
 	const iconSize = 13;
-	const maxVisibleCategories = 2;
+	const maxVisibleCategories = 1;
 	const btnStyles = "";
 	const globalImageStyles = "mb-4 mt-2 h-10 select-none pointer-events-none";
 	const tagesClassName =
@@ -137,7 +141,34 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 									</a>
 								))}
 							{svg.category.length > maxVisibleCategories && (
-								<Popover>{/* Implement your Popover content here */}</Popover>
+								<Popover>
+									<PopoverTrigger>
+										<button className={tagesClassName}>...</button>
+									</PopoverTrigger>
+									<PopoverContent
+										title="Categories"
+										className="bg-muted/50 backdrop-blur-2xl"
+									>
+										<h4 className="mb-2 text-xs font-medium">
+											Other categories
+										</h4>
+										<div className="flex flex-wrap gap-2">
+											{svg.category
+												.slice(1, svg.category.length)
+												.map((category, index) => (
+													<a
+														key={index}
+														href={`?cat=${category}`}
+														onClick={(e) => handleCategoryClick(category, e)}
+														title={`This icon is part of the ${category} category`}
+														className={tagesClassName}
+													>
+														{category}
+													</a>
+												))}
+										</div>
+									</PopoverContent>
+								</Popover>
 							)}
 						</>
 					) : (
