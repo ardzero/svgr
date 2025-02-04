@@ -107,7 +107,7 @@ export function Sidebar() {
 				id="sidebar-toggle"
 				variant="ghost"
 				size="icon"
-				className="fixed top-4 left-4 z-50 lg:hidden"
+				className="fixed top-3 left-1 z-50 lg:hidden"
 				onClick={() => setIsOpen(!isOpen)}
 			>
 				{isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -116,12 +116,12 @@ export function Sidebar() {
 			{/* Sidebar */}
 			<aside
 				id="sidebar"
-				className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r bg-background/95 backdrop-blur transition-transform lg:translate-x-0 ${
+				className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r bg-background/75 backdrop-blur-lg transition-transform md:bg-background/95 md:backdrop-blur-none lg:translate-x-0 ${
 					isOpen ? "translate-x-0" : "-translate-x-full"
 				}`}
 			>
 				{/* Header */}
-				<div className="flex h-16 items-center border-b px-16 md:px-6">
+				<div className="flex min-h-16 items-center border-b px-16 lg:px-6">
 					<a href="/" className="flex gap-2 text-xl font-bold">
 						<img src="/favicon.svg" alt="Svgr" className="size-6" />
 						<span className="-mb-4 text-xl font-bold">Svgr</span>
@@ -175,7 +175,7 @@ export function Sidebar() {
 				</div>
 
 				{/* Footer */}
-				<div className="absolute bottom-0 flex w-full justify-end space-x-4 border-t p-4 backdrop-blur-xl">
+				<div className="absolute bottom-0 flex w-full justify-end space-x-4 border-t p-4 backdrop-blur-xl lg:justify-center">
 					<a
 						href="https://github.com/ardzero/svgr"
 						target="_blank"

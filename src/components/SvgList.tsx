@@ -151,12 +151,12 @@ export function SvgList({ className }: TSvgList) {
 
 	return (
 		<div className={cn("w-full", className)}>
-			<div className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+			<div className="sticky top-0 z-30 flex min-h-16 flex-col justify-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 				<SearchBar
 					count={filteredSvgs.length}
 					setSearchTerm={setSearchTerm}
 					searchTerm={searchTerm}
-					className="[&_input:focus]:ring-opacity-25 px-4 py-4 lg:px-6"
+					className="[&_input:focus]:ring-opacity-25 px-4 pl-12 lg:px-6"
 				/>
 			</div>
 
@@ -193,7 +193,7 @@ export function SvgList({ className }: TSvgList) {
 					)}
 				</div>
 
-				<div className="relative mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+				<div className="relative mt-4 grid gap-4 min-[380px]:grid-cols-2 min-[600px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
 					{isLoading ? (
 						Array(30)
 							.fill(0)

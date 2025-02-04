@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const autoFillClassName =
-	"[&:-webkit-autofill]:bg-muted [-webkit-text-fill-color:hsl(var(--foreground))] [&:-webkit-autofill]:text-foreground [&:-webkit-autofill]:shadow-[0_0_0_30px_hsl(var(--muted))_inset]";
+	" [&:-webkit-autofill]:text-foreground [&:-webkit-autofill]:shadow-[0_0_0_30px_hsl(var(--muted))_inset]";
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
 	({ className, type, ...props }, ref) => {
 		return (
