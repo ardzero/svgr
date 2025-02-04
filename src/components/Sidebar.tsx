@@ -121,9 +121,12 @@ export function Sidebar() {
 				}`}
 			>
 				{/* Header */}
-				<div className="flex h-16 items-center border-b px-6">
-					<a href="/" className="text-xl font-bold">
-						Svgr
+				<div className="flex h-16 items-center border-b px-16 md:px-6">
+					<a href="/" className="flex gap-2 text-xl font-bold">
+						<img src="/favicon.svg" alt="Svgr" className="size-6" />
+						<span className="-mb-4 text-xl font-bold">Svgr</span>
+
+						<span className="-mb-4 text-xs text-muted-foreground">(v0.3)</span>
 					</a>
 				</div>
 
@@ -172,9 +175,9 @@ export function Sidebar() {
 				</div>
 
 				{/* Footer */}
-				<div className="absolute bottom-0 flex w-full justify-center space-x-4 border-t p-4 backdrop-blur-xl">
+				<div className="absolute bottom-0 flex w-full justify-end space-x-4 border-t p-4 backdrop-blur-xl">
 					<a
-						href="https://github.com"
+						href="https://github.com/ardzero/svgr"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-muted-foreground hover:text-foreground"
@@ -182,7 +185,7 @@ export function Sidebar() {
 						<Github size={20} />
 					</a>
 					<a
-						href="https://twitter.com"
+						href="https://x.com/ardastroid"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-muted-foreground hover:text-foreground"

@@ -60,6 +60,8 @@ npm run dev
 - [x] Wordmark structuer
 - [x] Categories
 - [ ] Figma Plugin
+- [ ] Copy with keyboard shortcut
+- [ ] Download svg options
 - [ ] Svg to png converter
 - [ ] Svg to React converter
 - [ ] other framework export
