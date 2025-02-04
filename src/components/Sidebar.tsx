@@ -116,7 +116,7 @@ export function Sidebar() {
 			{/* Sidebar */}
 			<aside
 				id="sidebar"
-				className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r bg-background/95 backdrop-blur transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+				className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r bg-background/95 backdrop-blur transition-transform lg:translate-x-0 ${
 					isOpen ? "translate-x-0" : "-translate-x-full"
 				}`}
 			>

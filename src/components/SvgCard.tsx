@@ -47,9 +47,11 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 
 	const iconStroke = 2;
 	const iconSize = 13;
-	const maxVisibleCategories = 1;
+	const maxVisibleCategories = 2;
 	const btnStyles = "";
 	const globalImageStyles = "mb-4 mt-2 h-10 select-none pointer-events-none";
+	const tagesClassName =
+		"rounded-md border border-border px-2 py-1 text-xs hover:bg-muted";
 
 	const handleCategoryClick = (category: string, e: React.MouseEvent) => {
 		e.preventDefault();
@@ -129,6 +131,7 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 										href={`?cat=${category}`}
 										onClick={(e) => handleCategoryClick(category, e)}
 										title={`This icon is part of the ${category} category`}
+										className={tagesClassName}
 									>
 										{category}
 									</a>
@@ -141,6 +144,7 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 						<a
 							href={`?cat=${svg.category}`}
 							onClick={(e) => handleCategoryClick(svg.category as string, e)}
+							className={tagesClassName}
 						>
 							{svg.category}
 						</a>

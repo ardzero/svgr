@@ -128,6 +128,19 @@ export function SvgList({ className }: TSvgList) {
 		window.history.replaceState({}, "", newUrl);
 	}, [searchTerm]);
 
+	// Add useEffect for keyboard shortcut
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if ((e.ctrlKey || e.metaKey) && e.key === "x") {
+				e.preventDefault();
+				setSearchTerm("");
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, []);
+
 	const searchResults = getFilteredSvgs(searchTerm, activeCategory);
 	const hasMoreResults = !showAll && searchResults.length > 30;
 
@@ -150,13 +163,17 @@ export function SvgList({ className }: TSvgList) {
 					)}
 				>
 					{searchTerm.length > 0 && displaySvgs.length > 0 && (
-						<button
-							className="flex items-center justify-center space-x-1 rounded-md py-1.5 text-sm font-medium opacity-80 transition-opacity hover:opacity-100"
+						<Button
+							variant="ghost"
 							onClick={() => setSearchTerm("")}
+							className="pr-2 pl-4"
 						>
-							<Trash size={16} strokeWidth={2} className="mr-1" />
-							<span>Clear results</span>
-						</button>
+							<Trash size={16} strokeWidth={2} />
+							Clear results{" "}
+							<span className="rounded-md border border-border p-1 px-2 text-xs">
+								⌘ + X
+							</span>
+						</Button>
 					)}
 
 					{!searchTerm && displaySvgs.length > 0 && (
