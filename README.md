@@ -1,9 +1,11 @@
-[![Bunestro](https://bunestro.ardastroid.com/ogImage.webp)](https://bunestro.ardastroid.com/)
+[![Bunestro](https://svgr.ardastroid.com/ogImage.webp)](https://svgr.ardastroid.com/)
 
-# Bunestro
+# Svgr
 
-An Astro app with Tailwind CSS, React, Shadcn, and Tailwind-motion setup along with built-in utilities. [Live deployment](https://bunestro.ardastroid.com/)
-Repo: [Github Repo](https://github.com/ardzero/bunestro)
+An open source svg directory with fuzzy search build with Astro and react. [Live deployment](https://svgr.ardastroid.com/)
+Repo: [Github Repo](https://github.com/ardzero/svgr)
+
+> Some part of this is based on [Svgl](https://github.com/pheralb/svgl). I wanned a version on react and astro with some difference features and slightly different ui.
 
 ## Usage (run locally)
 
@@ -53,14 +55,14 @@ npm run dev
 ## Roadmap
 
 - [ ] Make copyable svg list
+- [x] Fuzzy Search
+- [x] logo themes
+- [x] Wordmark structuer
 - [ ] Categories
-- [ ] Fuzzy Search
-- [ ] logo themes
-- [ ] Wordmark structuer
-- [ ] framework export
 - [ ] Figma Plugin
 - [ ] Svg to png converter
 - [ ] Svg to React converter
+- [ ] other framework export
 
 ## Socials
 

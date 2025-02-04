@@ -6,10 +6,11 @@ export const siteData: TSiteData = {
     favicon: "/favicon.svg", // .svg / .ico / .png
     name: "Svgr (svg registry) - An open source svg logo list/registry",
     shortName: "Svgr (svg registry)",
-    publisher: "ardzero.com",
-    baseUrl: "svgr.ardzero.com", //"svgr.vercel.app"
+    publisher: "ardastroid.com",
+    baseUrl: "svgr.ardastroid.com", //"svgr.vercel.app"
     description:
         "Svgr (svg registry) is a open source svg logo list/registry built on top of Astro and react",
+
     ogImage: { src: "/ogImage.webp", alt: "svgr", width: 1200, height: 630 },
 
     metadata_color: {

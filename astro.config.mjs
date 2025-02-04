@@ -10,7 +10,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://docs.astro.build/en/guides/environment-variables/#in-the-astro-config-file
 export default defineConfig({
-	site: "https://bunestro.ardastroid.com/",
+	site: "https://svgr.ardastroid.com/",
 	integrations: [
 		react(),
 		// tailwind({
