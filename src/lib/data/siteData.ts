@@ -9,7 +9,7 @@ export const siteData: TSiteData = {
     publisher: "ardastroid.com",
     baseUrl: "svgr.ardastroid.com", //"svgr.vercel.app"
     description:
-        "Svgr (svg registry) is a open source svg logo list/registry built on top of Astro and react",
+        "Svgr (svg registry) is an open source svg logo list/registry built on top of Astro and react",
 
     ogImage: { src: "/ogImage.webp", alt: "svgr", width: 1200, height: 630 },
 
