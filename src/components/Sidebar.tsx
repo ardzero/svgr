@@ -99,54 +99,51 @@ export function Sidebar() {
 					</a>
 				</div>
 
-				{/* Categories */}
-				<nav className="h-[calc(100vh-8rem)] overflow-y-auto p-4">
-					<ul className="space-y-2">
-						{/* All SVGs option */}
-						<li>
-							<Button
-								variant="ghost"
-								className={cn(
-									"w-full justify-between font-normal",
-									activeCategory === null && "bg-muted",
-								)}
-								onClick={() => handleCategoryClick(null)}
-							>
-								<span>All SVGs</span>
-								<span className="text-xs text-muted-foreground">
-									{totalCount}
-								</span>
-							</Button>
-						</li>
+				{/* Categories Container */}
+				<div className="flex h-[calc(100vh-4rem)] flex-col">
+					{/* Sticky All SVGs */}
+					<div className="bg-background/95 px-4 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+						<Button
+							variant="ghost"
+							className={cn(
+								"w-full justify-between font-normal",
+								activeCategory === null && "bg-muted",
+							)}
+							onClick={() => handleCategoryClick(null)}
+						>
+							<span>All SVGs</span>
+							<span className="text-xs text-muted-foreground">
+								{totalCount}
+							</span>
+						</Button>
+					</div>
 
-						{/* Divider */}
-						<li className="my-2">
-							<div className="h-px bg-border" />
-						</li>
-
-						{/* Categories list */}
-						{categories.map((category) => (
-							<li key={category}>
-								<Button
-									variant="ghost"
-									className={cn(
-										"w-full justify-between font-normal",
-										activeCategory === category && "bg-muted",
-									)}
-									onClick={() => handleCategoryClick(category)}
-								>
-									<span>{category}</span>
-									<span className="text-xs text-muted-foreground">
-										{categoryCounts[category]}
-									</span>
-								</Button>
-							</li>
-						))}
-					</ul>
-				</nav>
+					{/* Scrollable Categories */}
+					<nav className="flex-1 overflow-y-auto p-3">
+						<ul className="space-y-0.5 pb-10">
+							{categories.map((category) => (
+								<li key={category}>
+									<Button
+										variant="ghost"
+										className={cn(
+											"w-full justify-between p-0 px-4 font-normal",
+											activeCategory === category && "bg-muted",
+										)}
+										onClick={() => handleCategoryClick(category)}
+									>
+										<span>{category}</span>
+										<span className="text-xs text-muted-foreground">
+											{categoryCounts[category]}
+										</span>
+									</Button>
+								</li>
+							))}
+						</ul>
+					</nav>
+				</div>
 
 				{/* Footer */}
-				<div className="absolute bottom-0 flex w-full justify-center space-x-4 border-t p-4">
+				<div className="absolute bottom-0 flex w-full justify-center space-x-4 border-t p-4 backdrop-blur-xl">
 					<a
 						href="https://github.com"
 						target="_blank"
