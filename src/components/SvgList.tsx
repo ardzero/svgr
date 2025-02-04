@@ -10,6 +10,7 @@ import { SvgCard } from "@/components/SvgCard";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/SearchBar";
 import { SkeletonCard } from "@/components/SkeletonCard";
+import type { Tcategory } from "@/types/categories";
 type TSvgList = {
 	className?: string;
 };
@@ -25,16 +26,31 @@ export function SvgList({ className }: TSvgList) {
 
 	// Memoized data
 	const allSvgs = useMemo(() => JSON.parse(JSON.stringify(svgsData)), []);
+
+	// Handle URL params and initial data load
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const search = params.get("search") || "";
+		const category = params.get("cat");
+
+		setSearchTerm(search);
+		setActiveCategory(category);
+
+		// Immediate state update to prevent loading flicker
+		const filtered = getFilteredSvgs(search, category);
+		setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
+		setIsLoading(false);
+	}, []);
+
+	// Filter SVGs based on category
 	const filteredSvgs = useMemo(() => {
-		let filtered = [...allSvgs];
-		if (activeCategory) {
-			filtered = filtered.filter((svg) =>
-				svg.category.includes(activeCategory),
-			);
-		}
-		return filtered;
+		if (!activeCategory) return allSvgs;
+		return allSvgs.filter((svg: iSVG) =>
+			svg.category.includes(activeCategory as Tcategory),
+		);
 	}, [allSvgs, activeCategory]);
 
+	// Sort SVGs
 	const sortedSvgs = useMemo(
 		() => ({
 			latest: [...filteredSvgs].sort((a, b) => b.id! - a.id!),
@@ -45,6 +61,7 @@ export function SvgList({ className }: TSvgList) {
 		[filteredSvgs],
 	);
 
+	// Fuse instance for search
 	const fuse = useMemo(
 		() =>
 			new Fuse<iSVG>(filteredSvgs, {
@@ -57,9 +74,11 @@ export function SvgList({ className }: TSvgList) {
 		[filteredSvgs],
 	);
 
-	// Search function with hybrid strategy
-	const searchSvgs = (term: string) => {
-		if (!term) return sorted ? sortedSvgs.alphabetical : sortedSvgs.latest;
+	// Search function
+	const getFilteredSvgs = (term: string, category: string | null = null) => {
+		const baseList = sorted ? sortedSvgs.alphabetical : sortedSvgs.latest;
+
+		if (!term) return baseList;
 
 		return term.length < 3
 			? filteredSvgs.filter((svg: iSVG) =>
@@ -68,49 +87,39 @@ export function SvgList({ className }: TSvgList) {
 			: fuse.search(term).map((result) => result.item);
 	};
 
-	// Handle URL search params
+	// Handle URL changes
 	useEffect(() => {
 		const handleUrlChange = () => {
 			const params = new URLSearchParams(window.location.search);
-			const search = params.get("search");
+			const search = params.get("search") || "";
 			const category = params.get("cat");
 
-			if (search) setSearchTerm(search);
+			setSearchTerm(search);
 			setActiveCategory(category);
 
-			const filtered = searchSvgs(search || "");
+			const filtered = getFilteredSvgs(search, category);
 			setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
-			setIsLoading(false);
 		};
 
-		handleUrlChange();
 		window.addEventListener("urlchange", handleUrlChange);
 		return () => window.removeEventListener("urlchange", handleUrlChange);
-	}, []);
+	}, [showAll, sorted]);
 
-	// Update displayed SVGs
+	// Update displayed SVGs when filters change
 	useEffect(() => {
-		const isUrlSearch = window.location.search.includes("search=");
-		if (searchTerm === "" && !isUrlSearch) {
-			// Only show loading state on initial load, not during sorting
-			if (!displaySvgs.length) {
-				setIsLoading(true);
-				const timer = setTimeout(() => {
-					updateDisplaySvgs();
-					setIsLoading(false);
-				}, 500);
-				return () => clearTimeout(timer);
-			} else {
-				updateDisplaySvgs();
-			}
-		}
-		updateDisplaySvgs();
+		const filtered = getFilteredSvgs(searchTerm, activeCategory);
+		setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
 	}, [searchTerm, sorted, showAll, activeCategory]);
 
-	// Update URL search param
+	// Update URL search params
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
-		searchTerm ? params.set("search", searchTerm) : params.delete("search");
+
+		if (searchTerm) {
+			params.set("search", searchTerm);
+		} else {
+			params.delete("search");
+		}
 
 		const newUrl = params.toString()
 			? `${window.location.pathname}?${params.toString()}`
@@ -119,12 +128,7 @@ export function SvgList({ className }: TSvgList) {
 		window.history.replaceState({}, "", newUrl);
 	}, [searchTerm]);
 
-	const updateDisplaySvgs = () => {
-		const filtered = searchSvgs(searchTerm);
-		setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
-	};
-
-	const searchResults = searchSvgs(searchTerm);
+	const searchResults = getFilteredSvgs(searchTerm, activeCategory);
 	const hasMoreResults = !showAll && searchResults.length > 30;
 
 	return (
