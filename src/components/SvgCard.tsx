@@ -51,6 +51,16 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 	const btnStyles = "";
 	const globalImageStyles = "mb-4 mt-2 h-10 select-none pointer-events-none";
 
+	const handleCategoryClick = (category: string, e: React.MouseEvent) => {
+		e.preventDefault();
+		const params = new URLSearchParams(window.location.search);
+		params.set("cat", category);
+
+		const newUrl = `${window.location.pathname}?${params.toString()}`;
+		window.history.pushState({}, "", newUrl);
+		window.dispatchEvent(new Event("urlchange"));
+	};
+
 	return (
 		<div
 			className={cn(
@@ -117,6 +127,7 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 									<a
 										key={index}
 										href={`?cat=${category}`}
+										onClick={(e) => handleCategoryClick(category, e)}
 										title={`This icon is part of the ${category} category`}
 									>
 										{category}
@@ -127,7 +138,12 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 							)}
 						</>
 					) : (
-						<a href={`?cat=${svg.category}`}>{svg.category}</a>
+						<a
+							href={`?cat=${svg.category}`}
+							onClick={(e) => handleCategoryClick(svg.category as string, e)}
+						>
+							{svg.category}
+						</a>
 					)}
 				</div>
 			</div>

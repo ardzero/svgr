@@ -10,22 +10,50 @@ export function Sidebar() {
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
 	const categories = useMemo(() => getCategories().sort(), []);
 
-	// Get category counts
-	const categoryCounts: Record<string, number> = {};
-	categories.forEach((category) => {
-		categoryCounts[category] = svgsData.filter((svg) =>
-			svg.category.includes(category),
-		).length;
-	});
+	// Memoize category counts to prevent recalculation on re-renders
+	const { categoryCounts, totalCount } = useMemo(() => {
+		const counts: Record<string, number> = {};
+		categories.forEach((category) => {
+			counts[category] = svgsData.filter((svg) =>
+				svg.category.includes(category),
+			).length;
+		});
+		return { categoryCounts: counts, totalCount: svgsData.length };
+	}, [categories]);
 
-	// Add total count for "All SVGs"
-	const totalCount = svgsData.length;
-
-	// Sync with URL params
+	// Sync with URL params and listen for URL changes
 	useEffect(() => {
-		const params = new URLSearchParams(window.location.search);
-		const category = params.get("cat");
-		setActiveCategory(category);
+		const syncCategory = () => {
+			const params = new URLSearchParams(window.location.search);
+			const category = params.get("cat");
+			setActiveCategory(category);
+
+			// Scroll active category into view
+			if (category) {
+				requestAnimationFrame(() => {
+					const element = document.querySelector(
+						`[data-category="${category}"]`,
+					);
+					element?.scrollIntoView({ behavior: "smooth", block: "center" });
+				});
+			}
+		};
+
+		// Initial sync
+		syncCategory();
+
+		// Use a single event listener with event delegation
+		const handleUrlChange = (event: Event) => {
+			syncCategory();
+		};
+
+		window.addEventListener("urlchange", handleUrlChange);
+		window.addEventListener("popstate", handleUrlChange);
+
+		return () => {
+			window.removeEventListener("urlchange", handleUrlChange);
+			window.removeEventListener("popstate", handleUrlChange);
+		};
 	}, []);
 
 	const handleCategoryClick = (category: string | null) => {
@@ -125,6 +153,7 @@ export function Sidebar() {
 								<li key={category}>
 									<Button
 										variant="ghost"
+										data-category={category}
 										className={cn(
 											"w-full justify-between p-0 px-4 font-normal",
 											activeCategory === category && "bg-muted",

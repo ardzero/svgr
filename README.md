@@ -54,11 +54,11 @@ npm run dev
 
 ## Roadmap
 
-- [ ] Make copyable svg list
+- [x] Make copyable svg list
 - [x] Fuzzy Search
 - [x] logo themes
 - [x] Wordmark structuer
-- [ ] Categories
+- [x] Categories
 - [ ] Figma Plugin
 - [ ] Svg to png converter
 - [ ] Svg to React converter
