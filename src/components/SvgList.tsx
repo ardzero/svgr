@@ -21,27 +21,40 @@ export function SvgList({ className }: TSvgList) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isLoading, setIsLoading] = useState(true);
 	const [sorted, setSorted] = useState(false);
+	const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
 	// Memoized data
 	const allSvgs = useMemo(() => JSON.parse(JSON.stringify(svgsData)), []);
+	const filteredSvgs = useMemo(() => {
+		let filtered = [...allSvgs];
+		if (activeCategory) {
+			filtered = filtered.filter((svg) =>
+				svg.category.includes(activeCategory),
+			);
+		}
+		return filtered;
+	}, [allSvgs, activeCategory]);
+
 	const sortedSvgs = useMemo(
 		() => ({
-			latest: [...allSvgs].sort((a, b) => b.id! - a.id!),
-			alphabetical: [...allSvgs].sort((a, b) => a.title.localeCompare(b.title)),
+			latest: [...filteredSvgs].sort((a, b) => b.id! - a.id!),
+			alphabetical: [...filteredSvgs].sort((a, b) =>
+				a.title.localeCompare(b.title),
+			),
 		}),
-		[allSvgs],
+		[filteredSvgs],
 	);
 
 	const fuse = useMemo(
 		() =>
-			new Fuse<iSVG>(allSvgs, {
+			new Fuse<iSVG>(filteredSvgs, {
 				keys: ["title"],
 				threshold: 0.35,
 				ignoreLocation: true,
 				isCaseSensitive: false,
 				shouldSort: true,
 			}),
-		[allSvgs],
+		[filteredSvgs],
 	);
 
 	// Search function with hybrid strategy
@@ -49,7 +62,7 @@ export function SvgList({ className }: TSvgList) {
 		if (!term) return sorted ? sortedSvgs.alphabetical : sortedSvgs.latest;
 
 		return term.length < 3
-			? allSvgs.filter((svg: iSVG) =>
+			? filteredSvgs.filter((svg: iSVG) =>
 					svg.title.toLowerCase().includes(term.toLowerCase()),
 				)
 			: fuse.search(term).map((result) => result.item);
@@ -57,14 +70,22 @@ export function SvgList({ className }: TSvgList) {
 
 	// Handle URL search params
 	useEffect(() => {
-		const params = new URLSearchParams(window.location.search);
-		const search = params.get("search");
-		if (search) {
-			setSearchTerm(search);
-			const filtered = searchSvgs(search);
+		const handleUrlChange = () => {
+			const params = new URLSearchParams(window.location.search);
+			const search = params.get("search");
+			const category = params.get("cat");
+
+			if (search) setSearchTerm(search);
+			setActiveCategory(category);
+
+			const filtered = searchSvgs(search || "");
 			setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
 			setIsLoading(false);
-		}
+		};
+
+		handleUrlChange();
+		window.addEventListener("urlchange", handleUrlChange);
+		return () => window.removeEventListener("urlchange", handleUrlChange);
 	}, []);
 
 	// Update displayed SVGs
@@ -84,7 +105,7 @@ export function SvgList({ className }: TSvgList) {
 			}
 		}
 		updateDisplaySvgs();
-	}, [searchTerm, sorted, showAll]);
+	}, [searchTerm, sorted, showAll, activeCategory]);
 
 	// Update URL search param
 	useEffect(() => {
@@ -110,7 +131,7 @@ export function SvgList({ className }: TSvgList) {
 		<div className={cn("w-full", className)}>
 			<div className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 				<SearchBar
-					count={allSvgs.length}
+					count={filteredSvgs.length}
 					setSearchTerm={setSearchTerm}
 					searchTerm={searchTerm}
 					className="[&_input:focus]:ring-opacity-25 px-4 py-4 lg:px-6"

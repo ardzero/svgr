@@ -3,9 +3,11 @@ import { Menu, X, Github, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/data";
 import { svgsData } from "@/lib/data";
+import { cn } from "@/lib/utils";
 
 export function Sidebar() {
 	const [isOpen, setIsOpen] = useState(false);
+	const [activeCategory, setActiveCategory] = useState<string | null>(null);
 	const categories = getCategories();
 
 	// Get category counts
@@ -15,6 +17,35 @@ export function Sidebar() {
 			svg.category.includes(category),
 		).length;
 	});
+
+	// Sync with URL params
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const category = params.get("cat");
+		setActiveCategory(category);
+	}, []);
+
+	const handleCategoryClick = (category: string) => {
+		const params = new URLSearchParams(window.location.search);
+
+		if (activeCategory === category) {
+			params.delete("cat");
+			setActiveCategory(null);
+		} else {
+			params.set("cat", category);
+			setActiveCategory(category);
+		}
+
+		// Update URL without page reload
+		const newUrl = params.toString()
+			? `${window.location.pathname}?${params.toString()}`
+			: window.location.pathname;
+		window.history.pushState({}, "", newUrl);
+
+		// Dispatch custom event for SvgList to handle
+		window.dispatchEvent(new Event("urlchange"));
+		setIsOpen(false); // Close mobile sidebar after selection
+	};
 
 	// Close sidebar on mobile when clicking outside
 	useEffect(() => {
@@ -58,7 +89,9 @@ export function Sidebar() {
 			>
 				{/* Header */}
 				<div className="flex h-16 items-center border-b px-6">
-					<h1 className="text-xl font-bold">Svgr</h1>
+					<a href="/" className="text-xl font-bold">
+						Svgr
+					</a>
 				</div>
 
 				{/* Categories */}
@@ -68,7 +101,11 @@ export function Sidebar() {
 							<li key={category}>
 								<Button
 									variant="ghost"
-									className="w-full justify-between font-normal"
+									className={cn(
+										"w-full justify-between font-normal",
+										activeCategory === category && "bg-muted",
+									)}
+									onClick={() => handleCategoryClick(category)}
 								>
 									<span>{category}</span>
 									<span className="text-xs text-muted-foreground">
