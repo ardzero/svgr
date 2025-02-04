@@ -186,7 +186,7 @@ export function SvgList({ className }: TSvgList) {
 				{hasMoreResults ? (
 					<div
 						className={cn(
-							"relative z-16 grid w-full place-items-center items-end bg-gradient-to-t from-background from-30% to-transparent",
+							"pointer-events-none relative z-16 grid w-full place-items-center items-end bg-gradient-to-t from-background from-30% to-transparent",
 							"-mt-[7rem] h-36",
 						)}
 					>
@@ -203,18 +203,13 @@ export function SvgList({ className }: TSvgList) {
 				) : (
 					showAll &&
 					searchResults.length > 30 && (
-						<div className="sticky bottom-4 mt-8 grid w-full place-items-center">
+						<div className="pointer-events-none sticky bottom-4 mt-8 grid w-full place-items-center">
 							<Button
 								onClick={() => {
-									const grid = document.querySelector(".grid");
-									const header = document.querySelector(".sticky.top-0");
-									if (grid && header) {
-										const headerHeight = header.getBoundingClientRect().height;
-										window.scrollTo({
-											top: 0,
-											behavior: "instant",
-										});
-									}
+									window.scrollTo({
+										top: 0,
+										behavior: "instant",
+									});
 									setShowAll(false);
 								}}
 								className="pointer-events-auto rounded-full shadow-lg"
