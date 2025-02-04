@@ -36,9 +36,10 @@ export function SvgList({ className }: TSvgList) {
 		setSearchTerm(search);
 		setActiveCategory(category);
 
-		// Immediate state update to prevent loading flicker
+		// Always limit to 30 items initially, regardless of category or search
 		const filtered = getFilteredSvgs(search, category);
-		setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
+		setDisplaySvgs(filtered.slice(0, 30));
+		setShowAll(false); // Reset showAll when changing category
 		setIsLoading(false);
 	}, []);
 
@@ -98,12 +99,14 @@ export function SvgList({ className }: TSvgList) {
 			setActiveCategory(category);
 
 			const filtered = getFilteredSvgs(search, category);
-			setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
+			// Reset to showing only 30 items when category changes
+			setDisplaySvgs(filtered.slice(0, 30));
+			setShowAll(false);
 		};
 
 		window.addEventListener("urlchange", handleUrlChange);
 		return () => window.removeEventListener("urlchange", handleUrlChange);
-	}, [showAll, sorted]);
+	}, []);
 
 	// Update displayed SVGs when filters change
 	useEffect(() => {
