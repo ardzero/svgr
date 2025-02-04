@@ -59,8 +59,10 @@ npm run dev
 - [x] logo themes
 - [x] Wordmark structuer
 - [x] Categories
-- [ ] Figma Plugin
+- [ ] Adding logo docs
+- [ ] Logo submission docs
 - [ ] Copy with keyboard shortcut
+- [ ] Figma Plugin
 - [ ] Download svg options
 - [ ] Svg to png converter
 - [ ] Svg to React converter
