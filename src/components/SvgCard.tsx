@@ -1,25 +1,14 @@
 import { cn } from "@/lib/utils";
 import type { iSVG } from "@/types/svg";
-import { useState, useEffect } from "react";
-import { getSvgContent } from "@/lib/utils/getSvgContent";
-import {
-	ArrowUpRight,
-	ChevronsRight,
-	Baseline,
-	Sparkles,
-	MoreHorizontal,
-	Tag,
-	X,
-	Palette,
-} from "lucide-react";
+import { useState } from "react";
+import { ArrowUpRight, Baseline, Sparkles, Palette } from "lucide-react";
 
-// import DownloadSvg from "@/components/DownloadSvg";
-// import CopySvg from "@/components/CopySvg";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+
 import { CopyToClipboard } from "@/components/CardActions/CopyToClipboard";
 import { Button } from "./ui/button";
 
@@ -29,14 +18,14 @@ type TSvgCard = {
 	searchTerm?: string;
 };
 
-export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
-	const [isInFigma, setIsInFigma] = useState(false);
+export function SvgCard({ className, svg }: TSvgCard) {
+	// const [isInFigma, setIsInFigma] = useState(false);
 	const [wordmarkSvg, setWordmarkSvg] = useState(false);
 
-	useEffect(() => {
-		const searchParams = new URLSearchParams(window.location.search);
-		setIsInFigma(searchParams.get("figma") === "1");
-	}, []);
+	// useEffect(() => {
+	// 	const searchParams = new URLSearchParams(window.location.search);
+	// 	setIsInFigma(searchParams.get("figma") === "1");
+	// }, []);
 
 	// useEffect(() => {
 	// 	if (searchTerm) {
@@ -44,10 +33,10 @@ export function SvgCard({ className, svg, searchTerm }: TSvgCard) {
 	// 	}
 	// }, [searchTerm]);
 
-	const insertSVG = async (url?: string) => {
-		const content = await getSvgContent(url);
-		// Implement your Figma insert logic here
-	};
+	// const insertSVG = async (url?: string) => {
+	// 	const content = await getSvgContent(url);
+	// 	// Implement your Figma insert logic here
+	// };
 
 	const iconStroke = 2;
 	const iconSize = 13;

@@ -1,16 +1,18 @@
+import type { iSVG } from "@/types/svg";
+import { useState, useEffect, useMemo } from "react";
+
+import Fuse from "fuse.js";
 import { cn } from "@/lib/utils";
 import { svgsData } from "@/lib/data";
-import { useState, useEffect, useMemo } from "react";
-import type { iSVG } from "@/types/svg";
 import { ArrowDown, ArrowDownUp, ArrowUpDown, Trash } from "lucide-react";
-import { NotFound } from "@/components/NotFound";
-import Fuse from "fuse.js";
 
+import { NotFound } from "@/components/NotFound";
 import { SvgCard } from "@/components/SvgCard";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/SearchBar";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import type { Tcategory } from "@/types/categories";
+
 type TSvgList = {
 	className?: string;
 };
