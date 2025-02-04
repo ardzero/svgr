@@ -10,15 +10,15 @@ import sitemap from "@astrojs/sitemap";
 
 // https://docs.astro.build/en/guides/environment-variables/#in-the-astro-config-file
 export default defineConfig({
-  site: "https://bunestro.ardastroid.com/",
-  integrations: [
-    react(),
-    // tailwind({
-    //   applyBaseStyles: false,
-    // }),
-    sitemap(),
-  ],
-  vite: {
-    plugins: [tailwindcss()],
-  },
+	site: "https://bunestro.ardastroid.com/",
+	integrations: [
+		react(),
+		// tailwind({
+		//   applyBaseStyles: false,
+		// }),
+		sitemap(),
+	],
+	vite: {
+		plugins: [tailwindcss()],
+	},
 });

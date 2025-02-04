@@ -5,23 +5,11 @@
 An Astro app with Tailwind CSS, React, Shadcn, and Tailwind-motion setup along with built-in utilities. [Live deployment](https://bunestro.ardastroid.com/)
 Repo: [Github Repo](https://github.com/ardzero/bunestro)
 
-## Getting Started
-
-Create a new project using:
-
-```bash
-bunx @ardly/bunestro project-name
-```
-
-You can specify `-vs` or `--cursor` flags to auto open the project in VSCode or Cursor respectively after installation.
-
 ## Usage (run locally)
 
 > Requires `bun` or `nodejs` installed and up to date
 
 Go to the `root` folder where `package.json` exists.
-
-> skip this if you're using the bunx @ardly/bunestro project-name command, it auto installs the deps
 
 ```bash
 # Using bun
@@ -34,28 +22,14 @@ npm install
 ### Then
 
 ```bash
-# or
+# Using bun
 bun run dev
 
 # Using npm
 npm run dev
 ```
 
-> bun is not officially supported by astro, so if you ran into any problems, try using `npm` to see if it works before creating an github issue.
-
-#### Command list
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun run dev`             | Starts local dev server at `localhost:4321`      |
-| `bun run build`           | Build your production site to `./dist/`          |
-| `bun run preview`         | Preview your build locally, before deploying     |
-| `bun run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun run astro -- --help` | Get help using the Astro CLI                     |
-
-> just replace `bun` with `npm` if you're using npm
-
-## Features
+<!-- ## Features
 
 - Astro 5.2
 - Tailwind CSS v4
@@ -74,16 +48,19 @@ npm run dev
 - Configure colors in `src/styles/globals.css`
 - Site default metadata in `astro.config.mjs`
 - Component configurations in `src/lib/data/siteData.ts`
-- Astro configurations in `astro.config.mjs`
+- Astro configurations in `astro.config.mjs` -->
 
 ## Roadmap
 
-- [x] Add theme support
-- [x] Add basic Shadcn components
-- [x] Add static img optimization component
-- [ ] Add sample responsive components
-- [ ] Add more documentation
-- [ ] Add state management examples
+- [ ] Make copyable svg list
+- [ ] Categories
+- [ ] Fuzzy Search
+- [ ] logo themes
+- [ ] Wordmark structuer
+- [ ] framework export
+- [ ] Figma Plugin
+- [ ] Svg to png converter
+- [ ] Svg to React converter
 
 ## Socials
 

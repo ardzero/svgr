@@ -2,9 +2,9 @@
 
 /* responsive font sizes | comment this out if you wanna use defaults */
 :root {
-  font-size: 15px;
+	font-size: 15px;
 }
-
+/* 
 @media (min-width: 1600px) {
   :root {
     font-size: 17px;
@@ -15,25 +15,25 @@
   :root {
     font-size: 18px;
   }
-}
+} */
 
 /* page transition css start */
 .page-transition-easing {
-  transition-property: opacity, transform, filter, background;
-  transition-timing-function: ease-in-out;
-  transition-duration: 300ms;
+	transition-property: opacity, transform, filter, background;
+	transition-timing-function: ease-in-out;
+	transition-duration: 300ms;
 }
 @media (prefers-reduced-motion) {
-  .page-transition-easing {
-    transition-property: opacity, transform, filter, background;
-    transition-timing-function: none;
-    transition-duration: 0;
-  }
+	.page-transition-easing {
+		transition-property: opacity, transform, filter, background;
+		transition-timing-function: none;
+		transition-duration: 0;
+	}
 }
 .page-transition {
-  opacity: 0;
-  background: hsl(var(--background));
-  transform: translateY(40px);
-  filter: blur(12px);
+	opacity: 0;
+	background: hsl(var(--background));
+	transform: translateY(40px);
+	filter: blur(12px);
 }
 /* page transition css end */

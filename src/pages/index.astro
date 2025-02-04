@@ -3,12 +3,9 @@ import Layout from "@/layouts/Layout.astro";
 import { Button } from "@/components/ui/button";
 
 // import Img from "@/components/utils/Img.astro";
+import { SvgList } from "@/components/SvgList";
 ---
 
 <Layout>
-	<section class="container mx-auto">
-		<h1 class="my-10 text-center clamp-[1.2rem-10vw-2.5rem] font-bold">
-			An responsive Image component for Astro
-		</h1>
-	</section>
+	<SvgList client:load />
 </Layout>
