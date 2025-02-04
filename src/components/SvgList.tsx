@@ -138,7 +138,7 @@ export function SvgList({ className }: TSvgList) {
 				/>
 			</div>
 
-			<section className="mx-auto mb-4 px-4 lg:px-6">
+			<section className="mx-auto mt-2 mb-4 px-4 lg:px-6">
 				<div
 					className={cn(
 						"mb-4 flex items-center justify-end",
