@@ -18,10 +18,23 @@ export function SvgList({ className }: TSvgList) {
 	const [displaySvgs, setDisplaySvgs] = useState<iSVG[]>([]);
 	const [showAll, setShowAll] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		setDisplaySvgs(showAll ? notSortedSvgs : notSortedSvgs.slice(0, 30));
+		setIsLoading(true);
+		setTimeout(() => {
+			setDisplaySvgs(showAll ? notSortedSvgs : notSortedSvgs.slice(0, 30));
+			setIsLoading(false);
+		}, 500);
 	}, [showAll]);
+
+	const SkeletonCard = () => (
+		<div className="flex h-48 animate-pulse flex-col items-center justify-center gap-4 rounded-lg border p-4">
+			<div className="aspect-square h-24 w-full rounded-md bg-muted"></div>
+			<div className="h-2 w-3/4 rounded-md bg-muted"></div>
+			<div className="h-2 w-1/2 rounded-md bg-muted"></div>
+		</div>
+	);
 
 	return (
 		<div className={cn("min-h-screen w-full", className)}>
@@ -34,9 +47,11 @@ export function SvgList({ className }: TSvgList) {
 
 			<section className="container mx-auto mb-10">
 				<div className="relative mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
-					{displaySvgs.map((svg) => (
-						<SvgCard key={svg.id} svg={svg} />
-					))}
+					{isLoading
+						? Array(30)
+								.fill(0)
+								.map((_, index) => <SkeletonCard key={index} />)
+						: displaySvgs.map((svg) => <SvgCard key={svg.id} svg={svg} />)}
 				</div>
 				<div
 					className={cn(
