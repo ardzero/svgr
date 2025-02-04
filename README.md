@@ -65,6 +65,7 @@ npm run dev
 - [ ] Svg to png converter
 - [ ] Svg to React converter
 - [ ] other framework export
+- [ ] Svg api
 
 ## Socials
 
