@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useId, useRef } from "react";
+import { useId, useRef, useEffect } from "react";
 import { Search, X } from "lucide-react";
 
 type TSearchBar = {
@@ -19,6 +19,19 @@ export function SearchBar({
 }: TSearchBar) {
 	const id = useId();
 	const searchInputRef = useRef<HTMLInputElement>(null);
+
+	// Add useEffect for keyboard shortcut
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+				e.preventDefault();
+				searchInputRef.current?.focus();
+			}
+		};
+
+		document.addEventListener("keydown", handleKeyDown);
+		return () => document.removeEventListener("keydown", handleKeyDown);
+	}, []);
 
 	return (
 		<div className={cn("space-y-2", className)}>
