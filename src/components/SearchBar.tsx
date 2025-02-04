@@ -19,25 +19,6 @@ export function SearchBar({
 }: TSearchBar) {
 	const id = useId();
 	const searchInputRef = useRef<HTMLInputElement>(null);
-	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newSearchValue = e.target.value;
-		setSearchTerm(newSearchValue);
-
-		const url = new URL(window.location.href);
-		if (newSearchValue) {
-			// Add search query to URL and reset filter
-			url.searchParams.set("q", newSearchValue);
-		} else {
-			// Remove search query from URL when search is cleared
-			url.searchParams.delete("q");
-		}
-		window.history.pushState({}, "", url);
-	};
-	const handleClearSearch = () => {
-		setSearchTerm("");
-
-		window.history.pushState({}, "", window.location.href);
-	};
 
 	return (
 		<div className={cn("space-y-2", className)}>
@@ -48,10 +29,11 @@ export function SearchBar({
 				<Input
 					ref={searchInputRef}
 					id={id}
-					className="peer ps-9 pe-9"
+					className="peer min-h-10 ps-9 pe-9"
 					placeholder={`Search ${count} svgs`}
 					type="search"
-					onChange={handleSearch}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					value={searchTerm}
 				/>
 
 				<div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">

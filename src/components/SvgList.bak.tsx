@@ -62,9 +62,8 @@ export function SvgList({ className }: TSvgList) {
 
 	// Update displayed SVGs based on search and show all state
 	useEffect(() => {
-		// Skip the loading state if we're handling a URL search param
-		const isUrlSearch = window.location.search.includes("search=");
-		if (searchTerm === "" && !isUrlSearch) {
+		// Only show loading state when initially loading, not during search
+		if (searchTerm === "") {
 			setIsLoading(true);
 			setTimeout(() => {
 				const filtered = searchSvgs(searchTerm);
@@ -78,17 +77,12 @@ export function SvgList({ className }: TSvgList) {
 		}
 	}, [searchTerm, sorted, showAll]);
 
-	// Initialize with URL search param and trigger search
+	// Initialize with URL search param
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
 		const search = params.get("search");
-		if (search) {
-			setSearchTerm(search);
-			const filtered = searchSvgs(search);
-			setDisplaySvgs(showAll ? filtered : filtered.slice(0, 30));
-			setIsLoading(false);
-		}
-	}, []); // Only run once on mount
+		if (search) setSearchTerm(search);
+	}, []);
 
 	// Update URL search param
 	useEffect(() => {
