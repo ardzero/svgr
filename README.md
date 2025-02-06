@@ -5,7 +5,20 @@
 An open source svg directory with fuzzy search build with Astro and react. [Live deployment](https://svgr.ardastroid.com/)
 Repo: [Github Repo](https://github.com/ardzero/svgr)
 
-> A large portion of this is based on [Svgl](https://github.com/pheralb/svgl). I wanned a version built on react and astro with some difference features and slightly different ui.
+> [!NOTE]
+> A large portion of this is based on [Svgl](https://github.com/pheralb/svgl). I wanned a version built on react and astro with some difference features and slightly different UI.
+
+## 🛠️ Stack
+- [**Astro 5.2**](https://astro.build/) - A web framework with fast build time.
+- [**Typescript**](https://www.typescriptlang.org/) - Super set of JavaScript with types.
+- [**Tailwindcss**](https://tailwindcss.com/) - Utility-first CSS framework.
+- [**radix-ui**](https://www.radix-ui.com/) - A collection of headless components for react.
+- [**shadcn**](https://ui.shadcn.com/) - A collection of styled components built on top of radix-ui and tailwind.
+- [**tailwind-motion**](https://rombo.co/tailwind/) - A tailwind plugin for easy to use css only animations
+- [**Prettier**](https://prettier.io/) - An opinionated code formatted.
+- [**prettier-plugin-tailwindcss**](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) - A plugin to auto-sort tailwind classes
+- [**Lucide Icons**](https://lucide.dev/) - A clean icon library.
+- [**astrojs/react**](https://docs.astro.build/en/guides/integrations-guide/react/) - An astro integration enabling rendering and client-side hydration with React 
 
 ## Usage (run locally)
 
