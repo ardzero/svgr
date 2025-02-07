@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@/components/ui/button";
 
 interface UploadBoxProps {
 	title: string;
@@ -30,28 +31,33 @@ export function UploadBox({
 			<div className="flex w-full max-w-80 flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-foreground/30 bg-muted p-6 py-8 backdrop-blur-sm dark:bg-muted/50">
 				<svg
 					className="h-8 w-8 text-muted-foreground"
-					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
 					viewBox="0 0 24 24"
+					fill="none"
 					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
 				>
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						strokeWidth={2}
-						d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-					/>
+					<path d="m18 9-6-6-6 6" />
+					<path d="M12 3v14" />
+					<path d="M5 21h14" />
 				</svg>
 				<p className="text-sm text-muted-foreground">Drag and Drop</p>
 				<p className="text-sm text-muted-foreground/80">or</p>
-				<label className="focus:ring-opacity-75 inline-flex cursor-pointer items-center gap-2 rounded bg-blue-600 px-4 py-2 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-					<span>{description}</span>
-					<input
-						type="file"
-						onChange={onChange}
-						accept={accept}
-						className="hidden"
-					/>
-				</label>
+				<Button asChild>
+					<label className="font-semibold" tabIndex={0} role="button">
+						<span>{description}</span>
+						<input
+							type="file"
+							onChange={onChange}
+							accept={accept}
+							className="hidden"
+						/>
+					</label>
+				</Button>
 			</div>
 			<p className="text-sm opacity-80">
 				{/* {subtitle} */} This is based on{" "}
