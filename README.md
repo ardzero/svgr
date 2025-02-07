@@ -33,7 +33,7 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [x] Categories
 - [x] Adding logo docs
 - [x] Logo submission docs
-- [ ] Svg to png converter
+- [x] Svg to png converter
 - [ ] Figma Plugin
 - [ ] Download svg options
 - [ ] Svg to React converter
