@@ -84,6 +84,7 @@ export function UploadBox({
 				<a
 					href="https://github.com/t3dotgg/quickpic"
 					className="text-blue-500 underline focus-within:text-blue-600 hover:text-blue-600 dark:text-blue-400 dark:focus-within:text-blue-500 dark:hover:text-blue-500"
+					target="_blank"
 				>
 					theo's quikpic
 				</a>{" "}
