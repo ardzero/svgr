@@ -82,6 +82,25 @@ export function Sidebar() {
 		return () => document.removeEventListener("mousedown", handler);
 	}, [isOpen]);
 
+	// Add keyboard shortcut effect
+	useEffect(() => {
+		const handleKeyPress = (e: KeyboardEvent) => {
+			// Command/Control + P to navigate to PNG converter
+			if ((e.metaKey || e.ctrlKey) && e.key === "m") {
+				e.preventDefault();
+				window.location.href = "/svg-to-png";
+			}
+			// Command/Control + K to focus All SVGs
+			if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+				e.preventDefault();
+				handleCategoryClick(null);
+			}
+		};
+
+		document.addEventListener("keydown", handleKeyPress);
+		return () => document.removeEventListener("keydown", handleKeyPress);
+	}, []);
+
 	const handleCategoryClick = (category: string | null) => {
 		// If not on homepage, redirect to homepage with category param
 		if (window.location.pathname !== "/") {
@@ -168,6 +187,7 @@ export function Sidebar() {
 							<span>All SVGs</span>
 							<span className="text-xs text-muted-foreground">
 								{totalCount}
+								<span className="ml-1">(⌘ S)</span>
 							</span>
 						</Button>
 					</div>
@@ -205,6 +225,7 @@ export function Sidebar() {
 							className="text-sm transition-opacity focus-within:opacity-70 hover:opacity-70"
 						>
 							SVG to PNG Converter
+							<span className="ml-2 text-xs text-muted-foreground">(⌘ M)</span>
 						</a>
 					</div>
 					<div className="flex w-full justify-end space-x-4">

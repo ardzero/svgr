@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 interface UploadBoxProps {
@@ -16,6 +16,22 @@ export function UploadBox({
 	accept,
 	onChange,
 }: UploadBoxProps) {
+	// Add ref for the file input
+	const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+	// Add keyboard shortcut handler
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "u") {
+				e.preventDefault();
+				fileInputRef.current?.click();
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, []);
+
 	return (
 		<div className="flex flex-col items-center justify-center gap-4 p-4">
 			<div className="flex flex-col items-center gap-2">
@@ -49,8 +65,12 @@ export function UploadBox({
 				<p className="text-sm text-muted-foreground/80">or</p>
 				<Button asChild>
 					<label className="font-semibold" tabIndex={0} role="button">
-						<span>{description}</span>
+						<span>
+							{description}
+							<kbd className="ml-2">(⌘ U)</kbd>
+						</span>
 						<input
+							ref={fileInputRef}
 							type="file"
 							onChange={onChange}
 							accept={accept}
@@ -66,7 +86,7 @@ export function UploadBox({
 					className="text-blue-500 underline focus-within:text-blue-600 hover:text-blue-600 dark:text-blue-400 dark:focus-within:text-blue-500 dark:hover:text-blue-500"
 				>
 					theo's quikpic
-				</a>
+				</a>{" "}
 			</p>
 		</div>
 	);
