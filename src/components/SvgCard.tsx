@@ -49,8 +49,11 @@ export function SvgCard({ className, svg }: TSvgCard) {
 	const handleCategoryClick = (category: string, e: React.MouseEvent) => {
 		e.preventDefault();
 		const params = new URLSearchParams(window.location.search);
-		params.set("cat", category);
 
+		// Return early if category is already active
+		if (params.get("cat") === category) return;
+
+		params.set("cat", category);
 		const newUrl = `${window.location.pathname}?${params.toString()}`;
 		window.history.pushState({}, "", newUrl);
 		window.dispatchEvent(new Event("urlchange"));
