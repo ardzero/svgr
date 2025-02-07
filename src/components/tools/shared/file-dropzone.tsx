@@ -83,10 +83,10 @@ export function FileDropzone({
 			className="h-full w-full"
 		>
 			{isDragging && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center">
-					<div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
-					<div className="relative flex h-[90%] w-[90%] transform items-center justify-center rounded-xl border-2 border-dashed border-white/30 transition-all duration-200 ease-out animate-in fade-in zoom-in">
-						<p className="text-2xl font-semibold text-white">{dropText}</p>
+				<div className="fixed inset-0 z-[100] flex items-center justify-center lg:ml-[250px]">
+					<div className="absolute inset-0 bg-background/80 backdrop-blur-lg" />
+					<div className="relative flex h-[90%] w-[90%] transform items-center justify-center rounded-xl border-2 border-dashed border-foreground/30 transition-all duration-200 ease-out animate-in fade-in zoom-in">
+						<p className="text-2xl font-semibold text-foreground">{dropText}</p>
 					</div>
 				</div>
 			)}

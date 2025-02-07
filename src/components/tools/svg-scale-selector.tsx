@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
+import { Input } from "@/components/ui/input";
 
 interface SVGScaleSelectorProps {
 	title: string;
@@ -36,17 +37,18 @@ export function SVGScaleSelector({
 	}, [selected]);
 
 	return (
-		<div className="flex flex-col items-center gap-2">
-			<span className="text-sm text-white/60">{title}</span>
+		<div className="mb-2 flex flex-col items-center gap-2">
+			<span className="text-sm text-foreground/60">{title}</span>
 			<div className="flex flex-col items-center gap-2">
 				<div
 					ref={containerRef}
-					className="relative inline-flex rounded-lg bg-white/5 p-1"
+					className="relative inline-flex rounded bg-muted/80 p-1"
 				>
 					<div
 						ref={highlightRef}
-						className="absolute top-1 h-[calc(100%-8px)] rounded-md bg-blue-600 transition-all duration-200"
+						className="absolute top-1 h-[calc(100%-8px)] rounded bg-primary transition-all duration-200"
 					/>
+
 					{[...options, "custom" as const].map((option) => (
 						<button
 							key={String(option)}
@@ -54,20 +56,20 @@ export function SVGScaleSelector({
 							onClick={() =>
 								onChange(typeof option === "number" ? option : "custom")
 							}
-							className={`relative rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+							className={`relative rounded-md px-3 py-1.5 text-sm font-semibold transition-colors ${
 								option === selected
-									? "text-white"
-									: "text-white/80 hover:text-white"
+									? "text-background"
+									: "text-foreground/80 hover:text-foreground"
 							}`}
 						>
 							{option === "custom" ? "Custom" : `${option}×`}
 						</button>
 					))}
 				</div>
-				{selected === "custom" && (
-					<input
+				{selected === "custom" ? (
+					<Input
 						type="number"
-						min="0"
+						min="1"
 						max="64"
 						step="1"
 						value={customValue}
@@ -94,9 +96,12 @@ export function SVGScaleSelector({
 							);
 							onCustomValueChange?.(clampedValue);
 						}}
-						className="w-24 rounded-lg bg-white/5 px-3 py-1.5 text-sm text-white"
+						className="h-10 w-full max-w-28 rounded-lg bg-foreground/5 px-3 py-1.5 text-center font-semibold"
 						placeholder="Enter scale"
 					/>
+				) : (
+					// to fix the layoutshift
+					<div className="min-h-10"></div>
 				)}
 			</div>
 		</div>
