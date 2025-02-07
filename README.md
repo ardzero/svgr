@@ -74,13 +74,14 @@ npm run dev
 - [x] Categories
 - [ ] Adding logo docs
 - [ ] Logo submission docs
-- [ ] Copy with keyboard shortcut
+- [ ] Svg to png converter
 - [ ] Figma Plugin
 - [ ] Download svg options
-- [ ] Svg to png converter
 - [ ] Svg to React converter
+- [ ] Copy with keyboard shortcut
 - [ ] other framework export
 - [ ] Svg API
+- [ ] add markdown badges for svgs
 
 ## Socials
 
