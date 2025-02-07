@@ -31,8 +31,8 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [x] logo themes
 - [x] Wordmark structuer
 - [x] Categories
-- [ ] Adding logo docs
-- [ ] Logo submission docs
+- [x] Adding logo docs
+- [x] Logo submission docs
 - [ ] Svg to png converter
 - [ ] Figma Plugin
 - [ ] Download svg options
