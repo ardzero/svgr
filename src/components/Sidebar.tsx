@@ -166,8 +166,17 @@ export function Sidebar() {
 				{/* Categories Container */}
 				<div className="flex h-[calc(100dvh-4rem)] flex-col">
 					{/* Sticky All SVGs */}
-					<div className="bg-background/95 p-4 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
-						<div className="relative mb-2">
+					<div className="space-y-2 bg-background/95 p-3 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
+						<Button
+							variant="secondary"
+							className={cn("w-full motion-preset-bounce font-bold")}
+						>
+							<a href="/svg-to-png" className="w-full">
+								SVG to PNG Converter{" "}
+								<span className="text-xs text-muted-foreground">(⌘ Q)</span>
+							</a>
+						</Button>
+						<div className="relative">
 							<Search className="absolute top-2.5 left-2 size-4 text-muted-foreground" />
 							<Input
 								placeholder={`Search ${categories.length} categories...`}
@@ -194,7 +203,7 @@ export function Sidebar() {
 
 					{/* Scrollable Categories */}
 					<nav className="flex-1 overflow-y-auto p-3">
-						<ul className="space-y-0.5 pb-20">
+						<ul className="space-y-0.5 pb-12">
 							{filteredCategories.map((category) => (
 								<li key={category}>
 									<Button
@@ -218,16 +227,7 @@ export function Sidebar() {
 				</div>
 
 				{/* Footer */}
-				<div className="sticky bottom-0 w-full border-t p-4 pt-2 backdrop-blur-xl">
-					<div className="mb-3">
-						<a
-							href="/svg-to-png"
-							className="text-sm transition-opacity focus-within:opacity-70 hover:opacity-70"
-						>
-							SVG to PNG Converter
-							<span className="ml-2 text-xs text-muted-foreground">(⌘ Q)</span>
-						</a>
-					</div>
+				<div className="sticky bottom-0 w-full border-t p-4 backdrop-blur-xl">
 					<div className="flex w-full justify-end space-x-4">
 						<a
 							href="https://github.com/ardzero/svgr"
