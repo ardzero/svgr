@@ -83,6 +83,16 @@ export function Sidebar() {
 	}, [isOpen]);
 
 	const handleCategoryClick = (category: string | null) => {
+		// If not on homepage, redirect to homepage with category param
+		if (window.location.pathname !== "/") {
+			const params = new URLSearchParams();
+			if (category) {
+				params.set("cat", category);
+			}
+			window.location.href = `/${params.toString() ? `?${params}` : ""}`;
+			return;
+		}
+
 		const params = new URLSearchParams(window.location.search);
 
 		if (activeCategory === category) {
@@ -137,7 +147,7 @@ export function Sidebar() {
 				{/* Categories Container */}
 				<div className="flex h-[calc(100vh-4rem)] flex-col">
 					{/* Sticky All SVGs */}
-					<div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/20">
+					<div className="bg-background/95 p-4 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
 						<div className="relative mb-2">
 							<Search className="absolute top-2.5 left-2 size-4 text-muted-foreground" />
 							<Input
@@ -164,7 +174,7 @@ export function Sidebar() {
 
 					{/* Scrollable Categories */}
 					<nav className="flex-1 overflow-y-auto p-3">
-						<ul className="space-y-0.5 pb-10">
+						<ul className="space-y-0.5 pb-20">
 							{filteredCategories.map((category) => (
 								<li key={category}>
 									<Button
@@ -188,37 +198,47 @@ export function Sidebar() {
 				</div>
 
 				{/* Footer */}
-				<div className="absolute bottom-0 flex w-full justify-end space-x-4 border-t p-4 backdrop-blur-xl lg:justify-center">
-					<a
-						href="https://github.com/ardzero/svgr"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="text-muted-foreground hover:text-foreground"
-						title="Project GitHub"
-					>
-						<Github size={20} />
-						<span className="sr-only">Project GitHub</span>
-					</a>
-					<a
-						href="https://x.com/ardastroid"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="text-muted-foreground hover:text-foreground"
-						title="Author Twitter"
-					>
-						<Twitter size={20} />
-						<span className="sr-only">Author Twitter</span>
-					</a>
-					<a
-						href="https://ardastroid.com/links"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="text-muted-foreground hover:text-foreground"
-						title="Author Website"
-					>
-						<Globe size={20} />
-						<span className="sr-only">Author Website</span>
-					</a>
+				<div className="sticky bottom-0 w-full border-t p-4 pt-2 backdrop-blur-xl">
+					<div className="mb-3">
+						<a
+							href="/svg-to-png"
+							className="text-sm transition-opacity focus-within:opacity-70 hover:opacity-70"
+						>
+							SVG to PNG Converter
+						</a>
+					</div>
+					<div className="flex w-full justify-end space-x-4">
+						<a
+							href="https://github.com/ardzero/svgr"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-muted-foreground hover:text-foreground"
+							title="Project GitHub"
+						>
+							<Github size={18} />
+							<span className="sr-only">Project GitHub</span>
+						</a>
+						<a
+							href="https://x.com/ardastroid"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-muted-foreground hover:text-foreground"
+							title="Author Twitter"
+						>
+							<Twitter size={18} />
+							<span className="sr-only">Author Twitter</span>
+						</a>
+						<a
+							href="https://ardastroid.com/links"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-muted-foreground hover:text-foreground"
+							title="Author Website"
+						>
+							<Globe size={18} />
+							<span className="sr-only">Author Website</span>
+						</a>
+					</div>
 				</div>
 			</aside>
 		</>
