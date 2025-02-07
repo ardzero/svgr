@@ -164,7 +164,7 @@ export function Sidebar() {
 				</div>
 
 				{/* Categories Container */}
-				<div className="flex h-[calc(100vh-4rem)] flex-col">
+				<div className="flex h-[calc(100dvh-4rem)] flex-col">
 					{/* Sticky All SVGs */}
 					<div className="bg-background/95 p-4 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
 						<div className="relative mb-2">
