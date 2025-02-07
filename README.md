@@ -2,11 +2,14 @@
 
 # Svgr
 
-An open source svg directory with fuzzy search build with Astro and react. [Live deployment](https://svgr.ardastroid.com/)
+An open source SVG directory with fuzzy search build with Astro and react. [Live deployment](https://svgr.ardastroid.com/)
 Repo: [Github Repo](https://github.com/ardzero/svgr)
 
 > [!NOTE]
-> A large portion of this is based on [Svgl](https://github.com/pheralb/svgl). I wanned a version built on react and Astro cause astro's built times are blazingly fast. Also I wanned some different features and a slightly different UI.
+> A large portion of this is based on [Svgl](https://github.com/pheralb/svgl). I wanted a version built on React and Astro cause Astro's built times are blazingly fast. Also I wanted some different features and a slightly different UI.
+
+> [!IMPORTANT]
+> None of the SVGs on svgr are owned/licensed by svgr. svgr is just a free and open-source registry of SVGs. If you're the owner of any SVG/hold the rights to an SVG and want it to be removed from the list please open a GitHub issue or email me at [svgr@ardastroid.com](mailto:svgr@ardastroid.com)
 
 ## 🛠️ Stack
 - [**Astro 5.2**](https://astro.build/) - A web framework with fast build time.
@@ -20,9 +23,27 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [**Lucide Icons**](https://lucide.dev/) - A clean icon library.
 - [**astrojs/react**](https://docs.astro.build/en/guides/integrations-guide/react/) - An astro integration enabling rendering and client-side hydration with React 
 
+## Roadmap
+
+- [x] Make a copyable SVG list
+- [x] Fuzzy Search
+- [x] logo themes
+- [x] Wordmark structuer
+- [x] Categories
+- [ ] Adding logo docs
+- [ ] Logo submission docs
+- [ ] Svg to png converter
+- [ ] Figma Plugin
+- [ ] Download svg options
+- [ ] Svg to React converter
+- [ ] Copy with keyboard shortcut
+- [ ] other framework export
+- [ ] Svg API
+- [ ] add markdown badges for svgs
+
 ## Usage (run locally)
 
-> Requires `bun` or `nodejs` installed and up to date
+> Requires `bun` or `nodejs 18+` installed and up to date
 
 Go to the `root` folder where `package.json` exists.
 
@@ -44,50 +65,11 @@ bun run dev
 npm run dev
 ```
 
-<!-- ## Features
+## Contributors
+<a href="https://github.com/ardzero/svgr/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ardzero/svgr" />
+</a>
 
-- Astro 5.2
-- Tailwind CSS v4
-- React Integration
-- [Shadcn](https://ui.shadcn.com/) components
-- Custom utility components
-- Theme support (dark and light mode)
-- Tailwind CSS animations using [tailwindcss-motion](https://docs.rombo.co/tailwind)
-- SEO optimized (SEO component provided)
-- Responsive optimized img loader component
-- Share modal
-- Utilities like `qrCode gen, string shortner, uniqueCode gen, img placeholder, email validation, hashing etc`
-
-## Config
-
-- Configure colors in `src/styles/globals.css`
-- Site default metadata in `astro.config.mjs`
-- Component configurations in `src/lib/data/siteData.ts`
-- Astro configurations in `astro.config.mjs` -->
-
-## Roadmap
-
-- [x] Make a copyable SVG list
-- [x] Fuzzy Search
-- [x] logo themes
-- [x] Wordmark structuer
-- [x] Categories
-- [ ] Adding logo docs
-- [ ] Logo submission docs
-- [ ] Svg to png converter
-- [ ] Figma Plugin
-- [ ] Download svg options
-- [ ] Svg to React converter
-- [ ] Copy with keyboard shortcut
-- [ ] other framework export
-- [ ] Svg API
-- [ ] add markdown badges for svgs
-
-## Socials
-
-- Website: [ardastroid.com](https://ardastroid.com)
-- Email: [hello@ardastroid.com](mailto:hello@ardastroid.com)
-- GitHub: [@ardzero](https://github.com/ardzero)
 
 ## License
 
