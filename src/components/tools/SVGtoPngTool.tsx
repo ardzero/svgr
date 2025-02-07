@@ -241,7 +241,7 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 							console.error("Failed to read clipboard:", error);
 						}
 					}}
-					className="mx-auto rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 md:hidden"
+					className="mx-auto rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 lg:hidden"
 				>
 					Paste SVG
 				</button>
