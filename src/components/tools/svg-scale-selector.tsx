@@ -37,16 +37,16 @@ export function SVGScaleSelector({
 	}, [selected]);
 
 	return (
-		<div className="mb-2 flex flex-col items-center gap-2">
+		<div className="flex flex-col items-center gap-2 sm:mb-2">
 			<span className="text-sm text-foreground/60">{title}</span>
 			<div className="flex flex-col items-center gap-2">
 				<div
 					ref={containerRef}
-					className="relative inline-flex rounded bg-muted/80 p-1"
+					className="relative inline-flex rounded bg-muted/80 p-1 max-[380px]:flex-wrap"
 				>
 					<div
 						ref={highlightRef}
-						className="absolute top-1 h-[calc(100%-8px)] rounded bg-primary transition-all duration-200"
+						className="absolute top-1 h-[calc(100%-8px)] rounded bg-primary transition-all duration-200 max-[380px]:hidden"
 					/>
 
 					{[...options, "custom" as const].map((option) => (
@@ -58,7 +58,7 @@ export function SVGScaleSelector({
 							}
 							className={`relative rounded-md px-3 py-1.5 text-sm font-semibold transition-colors ${
 								option === selected
-									? "text-background"
+									? "text-background max-[380px]:bg-foreground"
 									: "text-foreground/80 hover:text-foreground"
 							}`}
 						>
@@ -96,12 +96,12 @@ export function SVGScaleSelector({
 							);
 							onCustomValueChange?.(clampedValue);
 						}}
-						className="h-10 w-full max-w-28 rounded-lg bg-foreground/5 px-3 py-1.5 text-center font-semibold"
+						className="h-9 w-full max-w-28 rounded-lg bg-foreground/5 px-3 py-1.5 text-center font-semibold"
 						placeholder="Enter scale"
 					/>
 				) : (
 					// to fix the layoutshift
-					<div className="min-h-10"></div>
+					<div className="min-h-9"></div>
 				)}
 			</div>
 		</div>

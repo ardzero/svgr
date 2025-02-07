@@ -216,13 +216,36 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 
 	if (!imageMetadata)
 		return (
-			<UploadBox
-				title="SVG to PNG"
-				subtitle="Allows pasting SVG from clipboard."
-				description="Upload SVG"
-				accept=".svg"
-				onChange={handleFileUploadEvent}
-			/>
+			<div className="flex flex-col gap-2">
+				<UploadBox
+					title="SVG to PNG"
+					subtitle="Allows pasting SVG from clipboard."
+					description="Upload SVG"
+					accept=".svg"
+					onChange={handleFileUploadEvent}
+				/>
+				{/* Add paste button that only shows on mobile */}
+				<button
+					onClick={async () => {
+						try {
+							const text = await navigator.clipboard.readText();
+							if (text.trim().toLowerCase().startsWith("<svg")) {
+								const blob = new Blob([text], { type: "image/svg+xml" });
+								const file = new File([blob], "pasted-svg.svg", {
+									type: "image/svg+xml",
+									lastModified: Date.now(),
+								});
+								handleFileUpload(file);
+							}
+						} catch (error) {
+							console.error("Failed to read clipboard:", error);
+						}
+					}}
+					className="mx-auto rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 md:hidden"
+				>
+					Paste SVG
+				</button>
+			</div>
 		);
 
 	return (
@@ -267,7 +290,7 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 			/>
 
 			{/* Action Buttons */}
-			<div className="flex gap-3">
+			<div className="flex flex-wrap justify-center gap-3">
 				<button
 					onClick={cancel}
 					className="rounded bg-red-700 px-4 py-2 text-sm font-medium text-white/90 transition-colors hover:bg-red-800"
