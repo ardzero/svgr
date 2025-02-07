@@ -1,6 +1,6 @@
 name: Submit a new SVG
 description: Submit a new SVG icon to be added to the collection.
-title: "[🟢 Submit SVG]: "
+title: "[🟢 SVG submission]"
 labels: [svg-request]
 body:
   - type: markdown
