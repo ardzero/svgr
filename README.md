@@ -42,6 +42,109 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [ ] Svg API
 - [ ] add markdown badges for svgs
 
+## SVG Submission
+
+There are two ways to submit your logo to Svgr:
+
+### 1. Submit via GitHub Issue
+
+If you'd prefer a quick submission, open an issue using our [SVG submission template](https://github.com/ardzero/svgr/issues/new?template=submit-svg.yml).
+
+> **Note:** Submissions through GitHub Issues may take longer to process as they depend on the availability of our contributors to put a pull request for your submission.
+
+### 2. Fork & Pull Request
+
+If you'd like to contribute directly, please follow these steps:
+
+1. **Fork the Repository & Install Dependencies**
+
+   If you want to preview your changes, first install the project dependencies:
+
+   ```bash:README.md
+   # Using bun
+   bun i
+   ```
+
+2. **Add Your Logo**
+
+   Navigate to the [**`public/library`**](https://github.com/ardzero/svgr/blob/main/public/library) folder in your fork and add your `.svg` logo file.
+
+   > **Warning:**
+   >
+   > - Optimize your SVG for web usage (you can use [SVGOMG](https://jakearchibald.github.io/svgomg/)).
+   > - Make sure the `viewBox` attribute is preserved during optimization.
+   > - The size limit for each `.svg` is **20kb**.
+
+3. **Update Logo Metadata**
+
+   Open the [**`src/lib/data/svgs.ts`**](https://github.com/ardzero/svgr/blob/main/src/lib/data/svgs.ts) file and add information about your logo. You can follow one of these example structures:
+
+   - **Simple Logo:**
+
+     ```json:README.md
+     {
+       "title": "Title",
+       "category": "Category",
+       "route": "/library/your_logo.svg",
+       "url": "Website"
+     }
+     ```
+
+   - **Logo + Wordmark Version:**
+
+     ```json:README.md
+     {
+       "title": "Title",
+       "category": "Category",
+       "route": "/library/your_logo.svg",
+       "wordmark": "/library/your_logo_wordmark.svg",
+       "url": "Website"
+     }
+     ```
+
+   - **Logo + Wordmark with Light/Dark Mode:**
+
+     ```json:README.md
+     {
+       "title": "Title",
+       "category": "Category",
+       "route": {
+         "light": "/library/your_logo_light.svg",
+         "dark": "/library/your_logo_dark.svg"
+       },
+       "wordmark": {
+         "light": "/library/your_wordmark-logo_light.svg",
+         "dark": "/library/your_wordmark-logo_dark.svg"
+       },
+       "url": "Website"
+     }
+     ```
+
+   - **Logo with Brand Guidelines:**
+
+     ```json:README.md
+     {
+       "title": "Title",
+       "category": "Category",
+       "route": "/library/your_logo.svg",
+       "wordmark": "/library/your_logo_wordmark.svg",
+       "brandUrl": "https://assets.website.com/brand-guidelines",
+       "url": "Website"
+     }
+     ```
+
+   > **Note:**
+   >
+   > - Check the list of available categories in [`src/types/categories.ts`](https://github.com/ardzero/svgr/blob/main/src/types/categories.ts). You can add a new category if needed.
+   > - To include multiple categories, simply use an array (e.g., `"category": ["Social", "Design"]`).
+
+4. **Create a Pull Request**
+
+   Once you've added your logo and updated the metadata, open a pull request. Your submission will be reviewed and, once approved, merged into the project.
+
+> **Disclaimer:**  
+> Please note that all SVG submissions are subject to removal if the rightful owner requests it. Svgr is an open registry and does not own or license any of the submitted SVGs. If you are the owner of an SVG and would like it removed, please open a GitHub issue or email at [svgr@ardastroid.com](mailto:svgr@ardastroid.com).
+
 ## Usage (run locally)
 
 > Requires `bun` or `nodejs 18+` installed and up to date
