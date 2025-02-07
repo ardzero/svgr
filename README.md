@@ -67,7 +67,7 @@ npm run dev
 
 ## Roadmap
 
-- [x] Make copyable svg list
+- [x] Make a copyable SVG list
 - [x] Fuzzy Search
 - [x] logo themes
 - [x] Wordmark structuer
@@ -80,7 +80,7 @@ npm run dev
 - [ ] Svg to png converter
 - [ ] Svg to React converter
 - [ ] other framework export
-- [ ] Svg api
+- [ ] Svg API
 
 ## Socials
 
