@@ -166,13 +166,14 @@ export function Sidebar() {
 				{/* Categories Container */}
 				<div className="flex h-[calc(100dvh-4rem)] flex-col">
 					{/* Sticky All SVGs */}
-					<div className="space-y-2 bg-background/95 p-3 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
-						<Button
-							variant="secondary"
-							className={cn("w-full motion-preset-bounce font-bold")}
-						>
-							<a href="/svg-to-png" className="w-full">
-								SVG to PNG Converter{" "}
+					<div className="space-y-2 bg-background/95 p-2 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
+						<Button variant="secondary" className={cn("w-full font-bold")}>
+							<a href="/svg-to-png" className="flex w-full items-center gap-2">
+								<div className="relative flex h-2 w-2">
+									<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+									<span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+								</div>
+								SVG &gt; PNG Converter{" "}
 								<span className="text-xs text-muted-foreground">(⌘ Q)</span>
 							</a>
 						</Button>
