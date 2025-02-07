@@ -1,4 +1,4 @@
-[![Bunestro](https://svgr.ardastroid.com/ogImage.webp)](https://svgr.ardastroid.com/)
+[![svgr](https://svgr.ardastroid.com/ogImage.webp)](https://svgr.ardastroid.com/)
 
 # Svgr
 
@@ -12,6 +12,7 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 > None of the SVGs on svgr are owned/licensed by svgr. svgr is just a free and open-source registry of SVGs. If you're the owner of any SVG/hold the rights to an SVG and want it to be removed from the list please open a GitHub issue or email me at [svgr@ardastroid.com](mailto:svgr@ardastroid.com)
 
 ## 🛠️ Stack
+
 - [**Astro 5.2**](https://astro.build/) - A web framework with fast build time.
 - [**Typescript**](https://www.typescriptlang.org/) - Super set of JavaScript with types.
 - [**Tailwindcss**](https://tailwindcss.com/) - Utility-first CSS framework.
@@ -21,7 +22,7 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [**Prettier**](https://prettier.io/) - An opinionated code formatted.
 - [**prettier-plugin-tailwindcss**](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) - A plugin to auto-sort tailwind classes
 - [**Lucide Icons**](https://lucide.dev/) - A clean icon library.
-- [**astrojs/react**](https://docs.astro.build/en/guides/integrations-guide/react/) - An astro integration enabling rendering and client-side hydration with React 
+- [**astrojs/react**](https://docs.astro.build/en/guides/integrations-guide/react/) - An astro integration enabling rendering and client-side hydration with React
 
 ## Roadmap
 
@@ -66,16 +67,16 @@ npm run dev
 ```
 
 ## Contributors
+
 <a href="https://github.com/ardzero/svgr/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ardzero/svgr" />
 </a>
-
 
 ## License
 
 MIT License
 
-Copyright (c) 2024 Ard Astroid / Farhan Ashhab Nur
+Copyright (c) 2025 Ard Astroid / Farhan Ashhab Nur
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

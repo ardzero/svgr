@@ -1,0 +1,99 @@
+name: Submit a new SVG
+description: Submit a new SVG icon to be added to the collection.
+title: "[🟢 Submit SVG]: "
+labels: [svg-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        👋 Please fill out the form below to submit a new SVG icon to the collection (Please keep in mind how long it'll take depends on the availability of the contributiors, you can always fork the repo and make a pull request if you want to add it faster):
+
+  - type: input
+    id: svg-name
+    attributes:
+      label: Title
+      description: Product name, brand name.
+      placeholder: Svgr
+    validations:
+      required: true
+
+  - type: input
+    id: svg-url
+    attributes:
+      label: SVG URL
+      description: The URL to the SVG file.
+      placeholder: https://website.com/logo.svg
+    validations:
+      required: true
+
+  - type: input
+    id: svg-url-dark
+    attributes:
+      label: SVG Dark Mode URL (optional)
+      description: The URL to the SVG file for dark mode.
+      placeholder: https://website.com/logo-dark.svg
+    validations:
+      required: false
+
+  - type: input
+    id: svg-product-url
+    attributes:
+      label: Product URL
+      description: The URL to the product or brand.
+      placeholder: https://website.com
+    validations:
+      required: true
+
+  - type: dropdown
+    id: svg-category
+    attributes:
+      label: Category
+      description: Category/Categories of the product. If the category does not exist, select “Others”.
+      multiple: true
+      options:
+        - AI
+        - Software
+        - Hardware
+        - Library
+        - Hosting
+        - Framework
+        - Devtool
+        - Monorepo
+        - CMS
+        - Database
+        - Compiler
+        - Crypto
+        - Cybersecurity
+        - Social
+        - Entertainment
+        - Browser
+        - Language
+        - Education
+        - Design
+        - Community
+        - Marketplace
+        - Music
+        - Vercel
+        - Google
+        - Payment
+        - VoidZero
+        - Authentication
+        - IoT
+        - Home Automation
+        - Config
+        - Secrets
+        - Other
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      options:
+        - label: I have checked svgr.com for the icon and made sure it's not already in the collection.
+          required: true
+        - label: The .svg URL I have provided is optimized for web use.
+          required: true
+        - label: The .svg size is less than **20kb**.
+          required: true
+        - label: I have permission to use this logo.
+          required: true
