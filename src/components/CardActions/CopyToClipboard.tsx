@@ -93,12 +93,21 @@ export function CopyToClipboard({
 			let titleElement = svgElement.querySelector("title");
 			if (!titleElement) {
 				titleElement = svgDoc.createElement("title");
+				// Insert title as first child
 				svgElement.insertBefore(titleElement, svgElement.firstChild);
+				titleElement.removeAttribute("xmlns");
+			} else {
+				// Remove any xmlns attribute from the title element
+				titleElement.removeAttribute("xmlns");
 			}
 			titleElement.textContent = svgInfo.title;
 
-			// Serialize back to string
-			content = new XMLSerializer().serializeToString(svgDoc);
+			// Serialize back to string and clean up any xmlns attributes in the title tag
+			content = new XMLSerializer()
+				.serializeToString(svgDoc)
+				.replace(/<title xmlns="[^"]*"/, "<title")
+				.replace(/<title xmlns=''/, "<title")
+				.replace(/<title xmlns>/, "<title");
 
 			await navigator.clipboard.writeText(content);
 
