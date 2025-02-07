@@ -1,14 +1,14 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { Button } from "@/components/ui/button";
-
+import { SVGTool } from "@/components/tools/SVGtoPngTool";
 // import Img from "@/components/utils/Img.astro";
-import { SvgList } from "@/components/SvgList.tsx";
+// import { SvgList } from "@/components/SvgList.tsx";
 ---
 
-<Layout>
-	<!-- <SvgList client:load /> -->
-	<div>
-		<h1>SVG to PNG</h1>
+<Layout title="SVG to PNG Converter | Free Online Tool | Scaled SVGs to PNGs">
+	<div class="flex min-h-screen flex-col justify-between">
+		<div class="flex flex-grow flex-col items-center justify-center">
+			<SVGTool client:load />
+		</div>
 	</div>
 </Layout>
