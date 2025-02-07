@@ -24,7 +24,7 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [**Lucide Icons**](https://lucide.dev/) - A clean icon library.
 - [**astrojs/react**](https://docs.astro.build/en/guides/integrations-guide/react/) - An astro integration enabling rendering and client-side hydration with React
 
-## Roadmap
+## 🗺️ Roadmap
 
 - [x] Make a copyable SVG list
 - [x] Fuzzy Search
@@ -42,7 +42,7 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [ ] Svg API
 - [ ] add markdown badges for svgs
 
-## SVG Submission
+## 📥 SVG Submission
 
 There are two ways to submit your logo to Svgr:
 
@@ -56,24 +56,25 @@ If you'd prefer a quick submission, open an issue using our [SVG submission temp
 
 If you'd like to contribute directly, please follow these steps:
 
-1. **Fork the Repository & Install Dependencies**
+1. **Fork the Repository**
 
    If you want to preview your changes, first install the project dependencies:
 
-   ```bash:README.md
-   # Using bun
-   bun i
-   ```
+```bash
+# Using bun
+bun I
+bun run dev
+```
 
 2. **Add Your Logo**
 
    Navigate to the [**`public/library`**](https://github.com/ardzero/svgr/blob/main/public/library) folder in your fork and add your `.svg` logo file.
 
-   > **Warning:**
-   >
-   > - Optimize your SVG for web usage (you can use [SVGOMG](https://jakearchibald.github.io/svgomg/)).
-   > - Make sure the `viewBox` attribute is preserved during optimization.
-   > - The size limit for each `.svg` is **20kb**.
+> [!WARNING]
+>
+> - Remember to optimize SVG for web, you can use [SVGOMG](https://jakearchibald.github.io/svgomg/).
+> - When you optimize the SVG, make sure that the `viewBox` is not removed.
+> - The size limit for each .svg is **20kb**.
 
 3. **Update Logo Metadata**
 
@@ -92,7 +93,7 @@ If you'd like to contribute directly, please follow these steps:
 
    - **Logo + Wordmark Version:**
 
-     ```json:README.md
+     ```json
      {
        "title": "Title",
        "category": "Category",
@@ -104,7 +105,7 @@ If you'd like to contribute directly, please follow these steps:
 
    - **Logo + Wordmark with Light/Dark Mode:**
 
-     ```json:README.md
+     ```json
      {
        "title": "Title",
        "category": "Category",
@@ -122,7 +123,7 @@ If you'd like to contribute directly, please follow these steps:
 
    - **Logo with Brand Guidelines:**
 
-     ```json:README.md
+     ```json
      {
        "title": "Title",
        "category": "Category",
@@ -133,10 +134,10 @@ If you'd like to contribute directly, please follow these steps:
      }
      ```
 
-   > **Note:**
-   >
-   > - Check the list of available categories in [`src/types/categories.ts`](https://github.com/ardzero/svgr/blob/main/src/types/categories.ts). You can add a new category if needed.
-   > - To include multiple categories, simply use an array (e.g., `"category": ["Social", "Design"]`).
+> [!NOTE]
+>
+> - Check the list of available categories in [`src/types/categories.ts`](https://github.com/ardzero/svgr/blob/main/src/types/categories.ts). You can add a new category if needed.
+> - To include multiple categories, simply use an array (e.g., `"category": ["Social", "Design"]`).
 
 4. **Create a Pull Request**
 
