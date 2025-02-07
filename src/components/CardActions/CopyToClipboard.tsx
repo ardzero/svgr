@@ -95,19 +95,14 @@ export function CopyToClipboard({
 				titleElement = svgDoc.createElement("title");
 				// Insert title as first child
 				svgElement.insertBefore(titleElement, svgElement.firstChild);
-				titleElement.removeAttribute("xmlns");
-			} else {
-				// Remove any xmlns attribute from the title element
-				titleElement.removeAttribute("xmlns");
-			}
+			} else titleElement.removeAttribute("xmlns"); // Remove any xmlns attribute from the title element
+
 			titleElement.textContent = svgInfo.title;
 
 			// Serialize back to string and clean up any xmlns attributes in the title tag
 			content = new XMLSerializer()
 				.serializeToString(svgDoc)
-				.replace(/<title xmlns="[^"]*"/, "<title")
-				.replace(/<title xmlns=''/, "<title")
-				.replace(/<title xmlns>/, "<title");
+				.replace(/<title xmlns(?:="[^"]*"|='[^']*'|)>/, "<title>"); // Remove xmlns attribute from title tag
 
 			await navigator.clipboard.writeText(content);
 

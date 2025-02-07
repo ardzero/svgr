@@ -86,7 +86,7 @@ export function Sidebar() {
 	useEffect(() => {
 		const handleKeyPress = (e: KeyboardEvent) => {
 			// Command/Control + P to navigate to PNG converter
-			if ((e.metaKey || e.ctrlKey) && e.key === "m") {
+			if ((e.metaKey || e.ctrlKey) && e.key === "q") {
 				e.preventDefault();
 				window.location.href = "/svg-to-png";
 			}
@@ -159,7 +159,7 @@ export function Sidebar() {
 						<img src="/favicon.svg" alt="Svgr" className="size-6" />
 						<span className="-mb-4 text-xl font-bold">Svgr</span>
 
-						<span className="-mb-4 text-xs text-muted-foreground">(v0.3)</span>
+						<span className="-mb-4 text-xs text-muted-foreground">(v0.5)</span>
 					</a>
 				</div>
 
@@ -225,7 +225,7 @@ export function Sidebar() {
 							className="text-sm transition-opacity focus-within:opacity-70 hover:opacity-70"
 						>
 							SVG to PNG Converter
-							<span className="ml-2 text-xs text-muted-foreground">(⌘ M)</span>
+							<span className="ml-2 text-xs text-muted-foreground">(⌘ Q)</span>
 						</a>
 					</div>
 					<div className="flex w-full justify-end space-x-4">
