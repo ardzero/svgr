@@ -91,7 +91,7 @@ export function Sidebar() {
 				window.location.href = "/svg-to-png";
 			}
 			// Command/Control + K to focus All SVGs
-			if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+			if ((e.metaKey || e.ctrlKey) && e.key === "a") {
 				e.preventDefault();
 				handleCategoryClick(null);
 			}
@@ -187,7 +187,7 @@ export function Sidebar() {
 							<span>All SVGs</span>
 							<span className="text-xs text-muted-foreground">
 								{totalCount}
-								<span className="ml-1">(⌘ S)</span>
+								<span className="ml-1">(⌘ A)</span>
 							</span>
 						</Button>
 					</div>

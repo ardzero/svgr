@@ -84,9 +84,10 @@ function useSvgConverter(props: {
 
 interface SVGRendererProps {
 	svgContent: string;
+	className?: string;
 }
 
-function SVGRenderer({ svgContent }: SVGRendererProps) {
+function SVGRenderer({ svgContent, className }: SVGRendererProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -100,7 +101,7 @@ function SVGRenderer({ svgContent }: SVGRendererProps) {
 		}
 	}, [svgContent]);
 
-	return <div ref={containerRef} />;
+	return <div ref={containerRef} className={className} />;
 }
 
 function SaveAsPngButton({
@@ -120,19 +121,30 @@ function SaveAsPngButton({
 		imageMetadata,
 	});
 
-	// const plausible = usePlausible();
+	// Add keyboard shortcut effect
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+				e.preventDefault();
+				void convertToPng();
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [convertToPng]);
 
 	return (
 		<div>
 			<canvas ref={setCanvasRef} {...canvasProps} hidden />
 			<button
 				onClick={() => {
-					// plausible("convert-svg-to-png");
 					void convertToPng();
 				}}
 				className="focus:ring-opacity-75 rounded bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-colors duration-200 hover:bg-green-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
 			>
 				Save as PNG
+				<kbd className="ml-2">(⌘ S)</kbd>
 			</button>
 		</div>
 	);
@@ -152,6 +164,19 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 		"svgTool_customScale",
 		1,
 	);
+
+	// Add keyboard shortcut effect for cancel
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "x") {
+				e.preventDefault();
+				cancel();
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [cancel]);
 
 	// Add paste handler
 	const handlePaste = async (e: ClipboardEvent) => {
@@ -204,7 +229,10 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 		<div className="mx-auto flex max-w-2xl flex-col items-center justify-center gap-6 p-6">
 			{/* Preview Section */}
 			<div className="flex w-full flex-col items-center gap-4 rounded-xl p-6">
-				<SVGRenderer svgContent={rawContent} />
+				<SVGRenderer
+					svgContent={rawContent}
+					className="size-96 object-contain"
+				/>
 				<p className="text-lg font-medium text-foreground/80">
 					{imageMetadata.name}
 				</p>
@@ -245,6 +273,7 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 					className="rounded bg-red-700 px-4 py-2 text-sm font-medium text-white/90 transition-colors hover:bg-red-800"
 				>
 					Cancel
+					<kbd className="ml-2">(⌘ X)</kbd>
 				</button>
 				<SaveAsPngButton
 					svgContent={rawContent}
