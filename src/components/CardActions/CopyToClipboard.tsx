@@ -82,13 +82,25 @@ export function CopyToClipboard({
 
 		try {
 			const response = await fetch(svgUrlToCopy);
-			const content = await response.text();
+			let content = await response.text();
+
+			// Parse SVG and add/update title if needed
+			const parser = new DOMParser();
+			const svgDoc = parser.parseFromString(content, "image/svg+xml");
+			const svgElement = svgDoc.documentElement;
+
+			// Find or create title element
+			let titleElement = svgElement.querySelector("title");
+			if (!titleElement) {
+				titleElement = svgDoc.createElement("title");
+				svgElement.insertBefore(titleElement, svgElement.firstChild);
+			}
+			titleElement.textContent = svgInfo.title;
+
+			// Serialize back to string
+			content = new XMLSerializer().serializeToString(svgDoc);
 
 			await navigator.clipboard.writeText(content);
-
-			// const category = Array.isArray(svgInfo.category)
-			// 	? svgInfo.category.sort().join(" - ")
-			// 	: svgInfo.category;
 
 			if (isWordmarkSvg) {
 				toast({

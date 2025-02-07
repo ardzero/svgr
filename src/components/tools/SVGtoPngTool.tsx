@@ -193,8 +193,14 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 				// Handle pasted SVG text content
 				item.getAsString((text) => {
 					if (text.trim().toLowerCase().startsWith("<svg")) {
+						// Parse SVG to get title
+						const parser = new DOMParser();
+						const svgDoc = parser.parseFromString(text, "image/svg+xml");
+						const titleElement = svgDoc.querySelector("title");
+						const fileName = titleElement?.textContent || "pasted-svg";
+
 						const blob = new Blob([text], { type: "image/svg+xml" });
-						const file = new File([blob], "pasted-svg.svg", {
+						const file = new File([blob], `${fileName}.svg`, {
 							type: "image/svg+xml",
 							lastModified: Date.now(),
 						});
