@@ -149,7 +149,7 @@ export function Sidebar() {
 			<aside
 				id="sidebar"
 				className={cn(
-					"fixed inset-y-0 left-0 z-40 w-64 transform border-r bg-background/75",
+					"fixed inset-y-0 left-0 z-40 w-80 transform border-r bg-background/75 lg:w-64",
 					"backdrop-blur-lg transition-transform md:bg-background/95 md:backdrop-blur-none lg:translate-x-0",
 					!isOpen && "-translate-x-full",
 				)}
@@ -165,9 +165,9 @@ export function Sidebar() {
 				</div>
 
 				{/* Categories Container */}
-				<div className="flex h-[calc(100dvh-4rem)] flex-col">
+				<div className="flex h-[calc(100dvh-4rem)] flex-col-reverse lg:flex-col">
 					{/* Sticky All SVGs */}
-					<div className="space-y-2 bg-background/95 p-2 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
+					<div className="mb-16 flex flex-col-reverse gap-1.5 bg-background/95 p-2 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20 lg:mb-0 lg:flex-col">
 						<Button
 							variant="secondary"
 							className={cn("w-full font-bold")}
@@ -215,7 +215,7 @@ export function Sidebar() {
 
 					{/* Scrollable Categories */}
 					<nav className="flex-1 overflow-y-auto p-3">
-						<ul className="space-y-0.5 pb-12">
+						<ul className="space-y-0.5 lg:pb-12">
 							{filteredCategories.map((category) => (
 								<li key={category}>
 									<Button
