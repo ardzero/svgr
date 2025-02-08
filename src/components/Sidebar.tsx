@@ -7,7 +7,7 @@ import { getCategories } from "@/lib/data";
 import { svgsData } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-export function Sidebar({ pageURL }: { pageURL: string }) {
+export function Sidebar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [search, setSearch] = useState("");
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -167,13 +167,7 @@ export function Sidebar({ pageURL }: { pageURL: string }) {
 				<div className="flex h-[calc(100dvh-4rem)] flex-col">
 					{/* Sticky All SVGs */}
 					<div className="space-y-2 bg-background/95 p-2 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
-						<Button
-							variant="outline"
-							className={cn(
-								"w-full font-bold",
-								pageURL === "/svg-to-png" && "bg-muted",
-							)}
-						>
+						<Button variant="secondary" className={cn("w-full font-bold")}>
 							<a href="/svg-to-png" className="flex w-full items-center gap-2">
 								<div className="relative flex h-2 w-2">
 									<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
@@ -196,7 +190,7 @@ export function Sidebar({ pageURL }: { pageURL: string }) {
 							variant="ghost"
 							className={cn(
 								"w-full justify-between font-normal",
-								activeCategory === null && pageURL === "/" && "bg-muted",
+								activeCategory === null && "bg-muted",
 							)}
 							onClick={() => handleCategoryClick(null)}
 						>
