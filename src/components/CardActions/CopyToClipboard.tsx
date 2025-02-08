@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { CopyIcon, Loader, X } from "lucide-react";
+import { CopyIcon, Loader, X, CheckIcon, Check } from "lucide-react";
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/components/ui/button";
 type TCopyToClipboard = {
@@ -37,6 +37,7 @@ export function CopyToClipboard({
 	svgInfo,
 }: TCopyToClipboard) {
 	const { toast } = useToast();
+	const [hasCopied, setHasCopied] = useState(false);
 
 	// Updated getSvgUrl to use localTheme
 	const getSvgUrl = () => {
@@ -111,17 +112,31 @@ export function CopyToClipboard({
 
 			await navigator.clipboard.writeText(content);
 
-			if (isWordmarkSvg) {
-				toast({
-					title: "Copied wordmark SVG to clipboard",
-					description: `${svgInfo.title}`,
-				});
-				return;
-			}
+			setHasCopied(true);
+			setTimeout(() => setHasCopied(false), 1300); // Reset after 2 seconds
+
+			// if (isWordmarkSvg) {
+			// 	toast({
+			// 		title: "Copied wordmark SVG to clipboard",
+			// 		description: `${svgInfo.title}`,
+			// 	});
+			// 	return;
+			// }
+
+			// toast({
+			// 	title: "Copied svg to clipboard",
+			// 	description: `${isWordmarkSvg ? "Wordmark of" : ""} ${svgInfo.title}`,
+			// });
 
 			toast({
 				title: "Copied svg to clipboard",
-				description: `${svgInfo.title}`,
+				description: `${isWordmarkSvg ? "Wordmark of" : ""} ${svgInfo.title}${
+					localTheme === "dark" ||
+					(localTheme === "system" &&
+						document.documentElement.classList.contains("dark"))
+						? " (light)"
+						: " (dark)"
+				}`,
 			});
 		} catch (err) {
 			console.error("Failed to copy:", err);
@@ -137,12 +152,42 @@ export function CopyToClipboard({
 			variant={"ghost"}
 			size={"icon"}
 			onClick={copyToClipboard}
-			className={cn("", className)}
+			className={cn("disabled:opacity-100", className)}
+			aria-label={hasCopied ? "Copied" : "Copy to clipboard"}
+			disabled={hasCopied}
 		>
-			<CopyIcon
-				className={cn("size-4", iconClassName)}
-				strokeWidth={iconStroke}
-			/>
+			{/* {hasCopied ? (
+				<CheckIcon
+					className={cn("size-4", iconClassName)}
+					strokeWidth={iconStroke}
+				/>
+			) : (
+				<CopyIcon
+					className={cn("size-4", iconClassName)}
+					strokeWidth={iconStroke}
+				/>
+			)} */}
+			<div className={cn("relative size-4 h-full w-full transition-all")}>
+				<Check
+					className={cn(
+						"absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] stroke-emerald-500 transition-all",
+						iconClassName,
+						hasCopied ? "scale-100 opacity-100" : "scale-0 opacity-0",
+					)}
+					size={16}
+					strokeWidth={3}
+					aria-hidden="true"
+				/>
+				<CopyIcon
+					size={16}
+					strokeWidth={2}
+					aria-hidden="true"
+					className={cn(
+						"absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transition-all",
+						hasCopied ? "scale-0 opacity-0" : "scale-100 opacity-100",
+					)}
+				/>
+			</div>
 			<span className="sr-only">Copy button</span>
 		</Button>
 	);
