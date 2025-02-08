@@ -264,10 +264,19 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 		<div className="mx-auto flex max-w-2xl flex-col items-center justify-center gap-6 p-6">
 			{/* Preview Section */}
 			<div className="flex w-full flex-col items-center gap-4 rounded-xl p-6">
-				<SVGRenderer
-					svgContent={rawContent}
-					className="size-96 object-contain"
-				/>
+				<div className="relative size-96">
+					{/* <div
+						className="absolute inset-0 grid size-full"
+						style={{
+							backgroundImage:
+								"url('data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACoAAAAoCAYAAACIC2hQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbRJREFUeNrsl91ugzAMhQMGJk3qNJVe7f0fb/+TWlqVskQ6YVYaCC2OduNIp6XCMV9DnCMXxpgX8zf2Vp/sN1nt8B2Oo9Ubrp+tHs30GBB7smqsWqsiEndGXG+1gUaQDQusrDqrSwLS3f9CQoM5NeZLQBrEu/HgPspIwjPg2hnIdyRySbZ48AdWeQ5yuwCyYYv3A40ryhN6yCoB6VenxvUBajA3BlkugGz9KmKuU0GMPAU5RCALtmU4rIP/vhOy4K8cOY6Ei34BZGqfVQD0sH0CsmeQFeohzDnCEiuqdmUxeFhCcfnToJ6AfGWFc2F/1MRgXdInaC2kHzWDPWIeTUAS/swJb4GmYP1KlkKQIewBwB42hNzhXoO4SdjwHL3n7NsjJgVLOML6yBlNKdgY6K0HdBds/DnYYcZIiBVjF8KGoCIuEimw1W5X5nCRHG4Xc6bVLoJ7om5HOVwkh9tRDhfJ4XZ8v4i5yMKVvMntvDOIuggeKup2hNct6iKIEXU7X/WiLiLQjly5HT/wxVxEoB25cjvtmbRn0p5JeybtmbRn0p5JeybtmbRn0p5Je6Z/6Jl+BRgAqFHkuKGmPZUAAAAASUVORK5CYII=')",
+						}}
+					></div> */}
+					<SVGRenderer
+						svgContent={rawContent}
+						className="relative size-96 border object-contain"
+					/>
+				</div>
 				<p className="text-lg font-medium text-foreground/80">
 					{imageMetadata.name}
 				</p>
