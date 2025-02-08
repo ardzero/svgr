@@ -35,7 +35,8 @@ export function SvgCard({ className, svg }: TSvgCard) {
 	const iconStroke = 2;
 	const iconSize = 13;
 	const maxVisibleCategories = 1;
-	const btnStyles = "";
+	const btnStyles =
+		"motion-scale-in-[0.38] motion-translate-x-in-[69%] motion-translate-y-in-[-1%] motion-duration-[0.11s]";
 	const globalImageStyles = cn(
 		"pointer-events-none mt-2 mb-4 h-10 select-none",
 		localTheme === "light"
