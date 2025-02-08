@@ -157,6 +157,7 @@ export function SvgList({ className }: TSvgList) {
 					setSearchTerm={setSearchTerm}
 					searchTerm={searchTerm}
 					className="[&_input:focus]:ring-opacity-25 px-4 pl-12 lg:px-6"
+					placeholderEndText={`in ${activeCategory} category`}
 				/>
 			</div>
 

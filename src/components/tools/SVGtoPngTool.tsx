@@ -4,6 +4,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useToast } from "@/hooks/use-toast";
 
 import {
 	type FileUploaderResult,
@@ -151,6 +152,7 @@ function SaveAsPngButton({
 }
 
 function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
+	const { toast } = useToast();
 	const {
 		rawContent,
 		imageMetadata,
@@ -165,49 +167,75 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 		1,
 	);
 
-	// Add keyboard shortcut effect for cancel
+	// Combine keyboard shortcuts into a single effect
 	useEffect(() => {
-		const handleKeyDown = (e: KeyboardEvent) => {
-			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "x") {
-				e.preventDefault();
-				cancel();
+		const handleKeyboardShortcuts = (e: KeyboardEvent) => {
+			if (e.ctrlKey || e.metaKey) {
+				if (e.key.toLowerCase() === "x") {
+					e.preventDefault();
+					cancel();
+				}
 			}
 		};
 
-		window.addEventListener("keydown", handleKeyDown);
-		return () => window.removeEventListener("keydown", handleKeyDown);
+		window.addEventListener("keydown", handleKeyboardShortcuts);
+		return () => window.removeEventListener("keydown", handleKeyboardShortcuts);
 	}, [cancel]);
 
-	// Add paste handler
+	// Simplified paste handler with toast notifications
 	const handlePaste = async (e: ClipboardEvent) => {
-		const items = e.clipboardData?.items;
-		if (!items) return;
+		try {
+			const items = e.clipboardData?.items;
+			if (!items) return;
 
-		for (const item of items) {
-			if (item.type === "image/svg+xml") {
-				const blob = item.getAsFile();
-				if (blob) {
-					handleFileUpload(blob);
-				}
-			} else if (item.type === "text/plain") {
-				// Handle pasted SVG text content
-				item.getAsString((text) => {
-					if (text.trim().toLowerCase().startsWith("<svg")) {
-						// Parse SVG to get title
-						const parser = new DOMParser();
-						const svgDoc = parser.parseFromString(text, "image/svg+xml");
-						const titleElement = svgDoc.querySelector("title");
-						const fileName = titleElement?.textContent || "pasted-svg";
+			let foundValidContent = false;
 
-						const blob = new Blob([text], { type: "image/svg+xml" });
-						const file = new File([blob], `${fileName}.svg`, {
-							type: "image/svg+xml",
-							lastModified: Date.now(),
-						});
-						handleFileUpload(file);
+			for (const item of items) {
+				if (item.type === "image/svg+xml") {
+					const blob = item.getAsFile();
+					if (blob) {
+						handleFileUpload(blob);
+						foundValidContent = true;
+						break;
 					}
+				} else if (item.type === "text/plain") {
+					await new Promise<void>((resolve) => {
+						item.getAsString((text) => {
+							if (text.trim().toLowerCase().startsWith("<svg")) {
+								const parser = new DOMParser();
+								const svgDoc = parser.parseFromString(text, "image/svg+xml");
+								const titleElement = svgDoc.querySelector("title");
+								const fileName = titleElement?.textContent || "pasted-svg";
+
+								const blob = new Blob([text], { type: "image/svg+xml" });
+								const file = new File([blob], `${fileName}.svg`, {
+									type: "image/svg+xml",
+									lastModified: Date.now(),
+								});
+								handleFileUpload(file);
+								foundValidContent = true;
+							}
+							resolve();
+						});
+					});
+				}
+				if (foundValidContent) break;
+			}
+
+			if (!foundValidContent) {
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "No valid SVG content found in clipboard",
 				});
 			}
+		} catch (error) {
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Failed to paste SVG content",
+			});
+			console.error("Paste error:", error);
 		}
 	};
 
@@ -230,13 +258,12 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 					accept=".svg"
 					onChange={handleFileUploadEvent}
 				/>
-				{/* Mobile paste button */}
+				{/* Mobile paste button with toast */}
 				<button
 					onClick={async () => {
 						try {
 							const text = await navigator.clipboard.readText();
 							if (text.trim().toLowerCase().startsWith("<svg")) {
-								// Parse SVG to get title
 								const parser = new DOMParser();
 								const svgDoc = parser.parseFromString(text, "image/svg+xml");
 								const titleElement = svgDoc.querySelector("title");
@@ -248,9 +275,21 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 									lastModified: Date.now(),
 								});
 								handleFileUpload(file);
+								return;
+							} else {
+								toast({
+									variant: "destructive",
+									title: "Error",
+									description: "No valid SVG content found in clipboard",
+								});
 							}
 						} catch (error) {
-							console.error("Failed to read clipboard:", error);
+							toast({
+								variant: "destructive",
+								title: "Error",
+								description: "Failed to read clipboard",
+							});
+							console.error("Clipboard error:", error);
 						}
 					}}
 					className="mx-auto rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 lg:hidden"

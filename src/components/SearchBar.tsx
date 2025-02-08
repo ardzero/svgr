@@ -9,6 +9,7 @@ type TSearchBar = {
 	count?: number;
 	setSearchTerm: (term: string) => void;
 	searchTerm: string;
+	placeholderEndText?: string;
 };
 
 export function SearchBar({
@@ -16,6 +17,7 @@ export function SearchBar({
 	count,
 	setSearchTerm,
 	searchTerm,
+	placeholderEndText = "",
 }: TSearchBar) {
 	const id = useId();
 	const searchInputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +45,7 @@ export function SearchBar({
 					ref={searchInputRef}
 					id={id}
 					className="peer min-h-10 ps-9 pe-9"
-					placeholder={`Search ${count} svgs`}
+					placeholder={`Search ${count} svgs ${placeholderEndText}`}
 					type="search"
 					onChange={(e) => setSearchTerm(e.target.value)}
 					value={searchTerm}
