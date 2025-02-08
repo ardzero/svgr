@@ -217,6 +217,7 @@ export function SvgCard({ className, svg }: TSvgCard) {
 					iconStroke={iconStroke}
 					svgInfo={svg}
 					isWordmarkSvg={wordmarkSvg && svg.wordmark !== undefined}
+					localTheme={localTheme}
 				/>
 
 				<Button

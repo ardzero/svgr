@@ -9,6 +9,7 @@ type TCopyToClipboard = {
 	iconClassName?: string;
 	iconStroke?: number;
 	isWordmarkSvg?: boolean;
+	localTheme?: "system" | "light" | "dark";
 	svgInfo: {
 		title: string;
 		category: string | string[];
@@ -32,13 +33,17 @@ export function CopyToClipboard({
 	iconClassName = "size-4",
 	iconStroke = 2,
 	isWordmarkSvg = false,
+	localTheme = "system",
 	svgInfo,
 }: TCopyToClipboard) {
 	const { toast } = useToast();
 
-	// Updated getSvgUrl to handle wordmark SVGs
+	// Updated getSvgUrl to use localTheme
 	const getSvgUrl = () => {
-		const dark = document.documentElement.classList.contains("dark");
+		const isDark =
+			localTheme === "dark" ||
+			(localTheme === "system" &&
+				document.documentElement.classList.contains("dark"));
 
 		if (isWordmarkSvg) {
 			const svgHasTheme = typeof svgInfo.wordmark !== "string";
@@ -49,7 +54,7 @@ export function CopyToClipboard({
 			}
 
 			return typeof svgInfo.wordmark !== "string"
-				? dark
+				? isDark
 					? svgInfo.wordmark?.dark
 					: svgInfo.wordmark?.light
 				: svgInfo.wordmark;
@@ -63,7 +68,7 @@ export function CopyToClipboard({
 		}
 
 		return typeof svgInfo.route !== "string"
-			? dark
+			? isDark
 				? svgInfo.route.dark
 				: svgInfo.route.light
 			: svgInfo.route;
