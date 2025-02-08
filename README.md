@@ -34,7 +34,7 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [x] Adding logo docs
 - [x] Logo submission docs
 - [x] Svg to png converter
-- [ ] theme switcher on each card so the full page theme doesn't have to be changed
+- [x] theme switcher on each card so the full page theme doesn't have to be changed
 - [ ] Figma Plugin
 - [ ] Download svg options
 - [ ] Svg to React converter
