@@ -274,12 +274,18 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 					></div> */}
 					<SVGRenderer
 						svgContent={rawContent}
-						className="relative size-96 border object-contain"
+						className="relative size-96 object-contain"
 					/>
 				</div>
-				<p className="text-lg font-medium text-foreground/80">
-					{imageMetadata.name}
-				</p>
+				<div className="text-center">
+					<p className="text-lg font-medium text-foreground/80">
+						{imageMetadata.name}
+					</p>
+					<p className="text-xs text-foreground/60 md:text-sm">
+						if you can't see the img,<br></br>try switching the theme to
+						light/dark
+					</p>
+				</div>
 			</div>
 
 			{/* Size Information */}
