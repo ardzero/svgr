@@ -1,7 +1,15 @@
 import { cn } from "@/lib/utils";
 import type { iSVG } from "@/types/svg";
 import { useState } from "react";
-import { ArrowUpRight, Baseline, Sparkles, Palette } from "lucide-react";
+import {
+	ArrowUpRight,
+	Baseline,
+	Sparkles,
+	Palette,
+	Monitor,
+	Sun,
+	Moon,
+} from "lucide-react";
 
 import {
 	Popover,
@@ -19,24 +27,10 @@ type TSvgCard = {
 };
 
 export function SvgCard({ className, svg }: TSvgCard) {
-	// const [isInFigma, setIsInFigma] = useState(false);
 	const [wordmarkSvg, setWordmarkSvg] = useState(false);
-
-	// useEffect(() => {
-	// 	const searchParams = new URLSearchParams(window.location.search);
-	// 	setIsInFigma(searchParams.get("figma") === "1");
-	// }, []);
-
-	// useEffect(() => {
-	// 	if (searchTerm) {
-	// 		setWordmarkSvg(false);
-	// 	}
-	// }, [searchTerm]);
-
-	// const insertSVG = async (url?: string) => {
-	// 	const content = await getSvgContent(url);
-	// 	// Implement your Figma insert logic here
-	// };
+	const [localTheme, setLocalTheme] = useState<"system" | "light" | "dark">(
+		"system",
+	);
 
 	const iconStroke = 2;
 	const iconSize = 13;
@@ -70,7 +64,14 @@ export function SvgCard({ className, svg }: TSvgCard) {
 			{wordmarkSvg && svg.wordmark ? (
 				<>
 					<img
-						className={cn("hidden dark:block", globalImageStyles)}
+						className={cn(
+							globalImageStyles,
+							localTheme === "system"
+								? "hidden dark:block"
+								: localTheme === "dark"
+									? "block"
+									: "hidden",
+						)}
 						src={
 							typeof svg.wordmark !== "string"
 								? svg.wordmark?.dark || ""
@@ -81,7 +82,14 @@ export function SvgCard({ className, svg }: TSvgCard) {
 						loading="lazy"
 					/>
 					<img
-						className={cn("block dark:hidden", globalImageStyles)}
+						className={cn(
+							globalImageStyles,
+							localTheme === "system"
+								? "block dark:hidden"
+								: localTheme === "light"
+									? "block"
+									: "hidden",
+						)}
 						src={
 							typeof svg.wordmark !== "string"
 								? svg.wordmark?.light || ""
@@ -95,14 +103,28 @@ export function SvgCard({ className, svg }: TSvgCard) {
 			) : (
 				<>
 					<img
-						className={cn("hidden dark:block", globalImageStyles)}
+						className={cn(
+							globalImageStyles,
+							localTheme === "system"
+								? "hidden dark:block"
+								: localTheme === "dark"
+									? "block"
+									: "hidden",
+						)}
 						src={typeof svg.route !== "string" ? svg.route.dark : svg.route}
 						alt={svg.title}
 						title={svg.title}
 						loading="lazy"
 					/>
 					<img
-						className={cn("block dark:hidden", globalImageStyles)}
+						className={cn(
+							globalImageStyles,
+							localTheme === "system"
+								? "block dark:hidden"
+								: localTheme === "light"
+									? "block"
+									: "hidden",
+						)}
 						src={typeof svg.route !== "string" ? svg.route.light : svg.route}
 						alt={svg.title}
 						title={svg.title}
@@ -177,44 +199,11 @@ export function SvgCard({ className, svg }: TSvgCard) {
 
 			{/* Actions */}
 			<div className="flex items-center space-x-1">
-				{/* {isInFigma && (
-					<Button
-						title="Insert to figma"
-						onClick={() => {
-							const svgHasTheme = typeof svg.route !== "string";
-							if (!svgHasTheme) {
-								insertSVG(typeof svg.route === "string" ? svg.route : "");
-								return;
-							}
-							const isDark =
-								document.documentElement.classList.contains("dark");
-							insertSVG(
-								typeof svg.route !== "string"
-									? isDark
-										? svg.route.dark
-										: svg.route.light
-									: svg.route,
-							);
-						}}
-						className={btnStyles}
-					>
-						<ChevronsRight size={iconSize} strokeWidth={iconStroke} />
-					</Button>
-				)} */}
-
 				<CopyToClipboard
 					iconStroke={iconStroke}
 					svgInfo={svg}
 					isWordmarkSvg={wordmarkSvg && svg.wordmark !== undefined}
 				/>
-
-				{/*
-				<DownloadSvg
-					svg={svg}
-					isDarkTheme={() =>
-						document.documentElement.classList.contains("dark")
-					}
-				/> */}
 
 				<Button
 					href={svg.url}
@@ -253,6 +242,25 @@ export function SvgCard({ className, svg }: TSvgCard) {
 						size={"icon"}
 					>
 						<Palette size={iconSize} strokeWidth={iconStroke} />
+					</Button>
+				)}
+
+				{((svg.wordmark && typeof svg.wordmark !== "string") ||
+					typeof svg.route !== "string") && (
+					<Button
+						title={`Switch to ${localTheme === "light" ? "dark" : "light"} theme`}
+						onClick={() =>
+							setLocalTheme((prev) => (prev === "light" ? "dark" : "light"))
+						}
+						className={btnStyles}
+						variant={"ghost"}
+						size={"icon"}
+					>
+						{localTheme === "light" ? (
+							<Sun size={iconSize} strokeWidth={iconStroke} />
+						) : (
+							<Moon size={iconSize} strokeWidth={iconStroke} />
+						)}
 					</Button>
 				)}
 			</div>
