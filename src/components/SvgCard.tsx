@@ -36,7 +36,14 @@ export function SvgCard({ className, svg }: TSvgCard) {
 	const iconSize = 13;
 	const maxVisibleCategories = 1;
 	const btnStyles = "";
-	const globalImageStyles = "mb-4 mt-2 h-10 select-none pointer-events-none";
+	const globalImageStyles = cn(
+		"pointer-events-none mt-2 mb-4 h-10 select-none",
+		localTheme === "light"
+			? "motion-preset-bounce"
+			: localTheme === "dark"
+				? "motion-preset-bounce"
+				: "",
+	);
 	const tagesClassName =
 		"rounded-md border border-border px-2 py-1 text-xs hover:bg-muted";
 
@@ -56,11 +63,18 @@ export function SvgCard({ className, svg }: TSvgCard) {
 	return (
 		<div
 			className={cn(
-				"group flex flex-col items-center justify-center rounded-md border border-neutral-200 p-4 transition-colors duration-100 hover:bg-neutral-100/80 dark:border-neutral-800 dark:hover:bg-neutral-800/20",
+				"group relative flex flex-col items-center justify-center rounded-md border border-neutral-200 p-4 transition-colors duration-100 hover:bg-neutral-100/80 dark:border-neutral-800 dark:hover:bg-neutral-800/20",
 				className,
 			)}
 		>
+			<div
+				className={cn(
+					"absolute inset-0 -z-2 bg-muted/65 dark:bg-muted/35",
+					localTheme === "system" ? "hidden" : "block",
+				)}
+			/>
 			{/* Image */}
+
 			{wordmarkSvg && svg.wordmark ? (
 				<>
 					<img
