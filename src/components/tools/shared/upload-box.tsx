@@ -6,6 +6,7 @@ interface UploadBoxProps {
 	subtitle?: string;
 	description: string;
 	accept: string;
+	divTitle?: string;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -14,6 +15,7 @@ export function UploadBox({
 	subtitle,
 	description,
 	accept,
+	divTitle,
 	onChange,
 }: UploadBoxProps) {
 	// Add ref for the file input
@@ -38,7 +40,10 @@ export function UploadBox({
 				<div className="flex flex-col items-center gap-2">
 					<h1 className="text-center text-2xl font-bold">{title}</h1>
 					{subtitle && (
-						<p className="inline-block rounded-full border bg-foreground/5 px-3 py-1 text-center text-sm">
+						<p
+							className="inline-block cursor-default rounded-full border bg-foreground/5 px-3 py-1 text-center text-sm"
+							title={divTitle}
+						>
 							{subtitle}
 						</p>
 					)}
@@ -63,7 +68,7 @@ export function UploadBox({
 				</svg>
 				<p className="text-sm text-muted-foreground">Drag and Drop</p>
 				<p className="text-sm text-muted-foreground/80">or</p>
-				<Button asChild>
+				<Button asChild title="Keyboard shortcut: Ctrl/Cmd + U">
 					<label className="font-semibold" tabIndex={0} role="button">
 						<span>
 							{description}

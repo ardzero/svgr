@@ -171,6 +171,7 @@ export function Sidebar() {
 						<Button
 							variant="secondary"
 							className={cn("w-full font-bold")}
+							title="Keyboard shortcut: Ctrl/Cmd + Q"
 							asChild
 						>
 							<a
@@ -204,8 +205,10 @@ export function Sidebar() {
 								activeCategory === null && "bg-muted",
 							)}
 							onClick={() => handleCategoryClick(null)}
+							title="Keyboard shortcut: Ctrl/Cmd + A"
 						>
 							<span>All SVGs</span>
+
 							<span className="text-xs text-muted-foreground">
 								{totalCount}
 								<span className="ml-1">(⌘ A)</span>

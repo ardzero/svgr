@@ -143,6 +143,7 @@ function SaveAsPngButton({
 					void convertToPng();
 				}}
 				className="focus:ring-opacity-75 rounded bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-colors duration-200 hover:bg-green-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
+				title="Keyboard shortcut: Ctrl/Cmd + S"
 			>
 				Save as PNG
 				<kbd className="ml-2">(⌘ S)</kbd>
@@ -254,6 +255,7 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 				<UploadBox
 					title="SVG to PNG"
 					subtitle="Allows pasting SVG from clipboard."
+					divTitle="Keyboard shortcut: Ctrl/Cmd + V"
 					description="Upload SVG"
 					accept=".svg"
 					onChange={handleFileUploadEvent}
@@ -360,6 +362,7 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 				<button
 					onClick={cancel}
 					className="rounded bg-red-700 px-4 py-2 text-sm font-medium text-white/90 transition-colors hover:bg-red-800"
+					title="Keyboard shortcut: Ctrl/Cmd + X"
 				>
 					Cancel
 					<kbd className="ml-2">(⌘ X)</kbd>
