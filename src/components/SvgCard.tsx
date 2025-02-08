@@ -260,8 +260,8 @@ export function SvgCard({ className, svg }: TSvgCard) {
 					</Button>
 				)}
 
-				{((svg.wordmark && typeof svg.wordmark !== "string") ||
-					typeof svg.route !== "string") && (
+				{((wordmarkSvg && typeof svg.wordmark !== "string") ||
+					(!wordmarkSvg && typeof svg.route !== "string")) && (
 					<Button
 						title={`Switch to ${localTheme === "light" ? "dark" : "light"} theme`}
 						onClick={() =>
