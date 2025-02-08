@@ -42,6 +42,7 @@ Repo: [Github Repo](https://github.com/ardzero/svgr)
 - [ ] other framework export
 - [ ] Svg API
 - [ ] add markdown badges for svgs
+- [ ] Raycast extension
 
 ## 📥 SVG Submission
 
@@ -63,7 +64,7 @@ If you'd like to contribute directly, please follow these steps:
 
 ```bash
 # Using bun
-bun I
+bun i
 bun run dev
 ```
 
