@@ -30,4 +30,7 @@ export type Tcategory =
     | 'IoT'
     | 'Home Automation'
     | 'Config'
-    | 'Secrets';
+    | 'Secrets'
+    | 'Game'
+    | 'Gaming'
+    | 'Esports';

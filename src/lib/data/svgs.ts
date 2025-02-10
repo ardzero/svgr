@@ -3276,5 +3276,48 @@ export const svgs: iSVG[] = [
             dark: '/library/base-ui-dark.svg'
         },
         url: 'https://base-ui.com/'
-    }
+    },
+    {
+        title: 'MLBB',
+        category: ['Game', 'Esports', 'Gaming'],
+        route: {
+            light: '/library/mlbb_dark.svg',
+            dark: '/library/mlbb_light.svg'
+        },
+        wordmark: {
+            light: '/library/mlbb_wordmark_dark.svg',
+            dark: '/library/mlbb_wordmark_light.svg'
+        },
+        url: 'https://www.mobilelegends.com/'
+    },
+    {
+        title: 'MLBB',
+        subTitle: 'color',
+        category: ['Game', 'Esports', 'Gaming'],
+        route: '/library/mlbb_color.svg',
+        wordmark: '/library/mlbb_wordmark_color.svg',
+        url: 'https://www.mobilelegends.com/'
+    },
+    {
+        title: 'Zenetic Esports',
+        category: ['Esports', 'Gaming'],
+        route: '/library/zenetic_color.svg',
+        wordmark: {
+            light: '/library/zenetic_wordmark_color_dark.svg',
+            dark: '/library/zenetic_wordmark_color_light.svg'
+        },
+        url: 'https://www.zenetic.com/'
+
+    },
+
+
+    // {
+    //     title: 'Gigabyte',
+    //     category: ['Software', 'Hardware'],
+    //     route: '/library/gigabyte.svg',
+    //     wordmark: '/library/gigabyte_wordmark.svg',
+    //     url: 'https://www.gigabyte.com/'
+    // }
 ];
+
+

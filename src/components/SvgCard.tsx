@@ -153,6 +153,12 @@ export function SvgCard({ className, svg }: TSvgCard) {
 				<p className="truncate text-center text-[15px] font-medium text-balance select-all">
 					{svg.title}
 				</p>
+				{svg.subTitle && (
+					<p className="-mt-2 mb-2 text-center text-xs text-muted-foreground">
+						( {svg.subTitle} )
+					</p>
+				)}
+
 				<div className="flex items-center justify-center space-x-1">
 					{Array.isArray(svg.category) ? (
 						<>
