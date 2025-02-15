@@ -3323,6 +3323,17 @@ export const svgs: iSVG[] = [
         url: 'https://www.konami.com/efootball/en/'
 
     },
+    {
+        title: 'EA FC25',
+        category: ['Game', 'Esports', 'Gaming'],
+        route: {
+            light: '/library/fc25_dark.svg',
+            dark: '/library/fc25_light.svg'
+        },
+
+        url: 'https://www.ea.com/en/games/ea-sports-fc/fc-25'
+
+    },
 
     // {
     //     title: 'Gigabyte',
