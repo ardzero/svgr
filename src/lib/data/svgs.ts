@@ -3309,7 +3309,20 @@ export const svgs: iSVG[] = [
         url: 'https://www.zenetic.com/'
 
     },
+    {
+        title: 'eFootball',
+        category: ['Game', 'Esports', 'Gaming'],
+        route: {
+            light: '/library/efootball_dark.svg',
+            dark: '/library/efootball_color_dark.svg'
+        },
+        wordmark: {
+            light: '/library/efootball_wordmark_dark.svg',
+            dark: '/library/efootball_wordmark_color_dark.svg'
+        },
+        url: 'https://www.zenetic.com/'
 
+    },
 
     // {
     //     title: 'Gigabyte',
