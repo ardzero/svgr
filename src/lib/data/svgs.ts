@@ -3306,7 +3306,7 @@ export const svgs: iSVG[] = [
             light: '/library/zenetic_wordmark_color_dark.svg',
             dark: '/library/zenetic_wordmark_color_light.svg'
         },
-        url: 'https://www.zenetic.com/'
+        url: 'https://zeneticesports.com/'
 
     },
     {
@@ -3320,7 +3320,7 @@ export const svgs: iSVG[] = [
             light: '/library/efootball_wordmark_dark.svg',
             dark: '/library/efootball_wordmark_color_dark.svg'
         },
-        url: 'https://www.zenetic.com/'
+        url: 'https://www.konami.com/efootball/en/'
 
     },
 
