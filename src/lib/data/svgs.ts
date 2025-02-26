@@ -3335,18 +3335,18 @@ export const svgs: iSVG[] = [
 
     },
     {
-        title: 'Logitech',
-        category: ['Software', 'Hardware'],
+        title: 'Logitech G',
+        category: ['Hardware', 'Gaming'],
         route: {
-            light: '/library/logitech_dark.svg',
-            dark: '/library/logitech_light.svg'
+            light: '/library/logitechg_dark.svg',
+            dark: '/library/logitechg_light.svg'
         },
         wordmark: {
-            light: '/library/logitech_wordmark_dark.svg',
-            dark: '/library/logitech_wordmark.svg'
+            light: '/library/logitechg_wordmark_dark.svg',
+            dark: '/library/logitechg_wordmark.svg'
         },
 
-        url: 'https://www.logitech.com/'
+        url: 'https://www.logitechg.com/en-us'
 
     }
 
