@@ -3334,6 +3334,21 @@ export const svgs: iSVG[] = [
         url: 'https://www.ea.com/en/games/ea-sports-fc/fc-25'
 
     },
+    {
+        title: 'Logitech',
+        category: ['Software', 'Hardware'],
+        route: {
+            light: '/library/logitech_dark.svg',
+            dark: '/library/logitech_light.svg'
+        },
+        wordmark: {
+            light: '/library/logitech_wordmark_dark.svg',
+            dark: '/library/logitech_wordmark.svg'
+        },
+
+        url: 'https://www.logitech.com/'
+
+    }
 
     // {
     //     title: 'Gigabyte',
