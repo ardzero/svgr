@@ -151,7 +151,7 @@ export function SvgList({ className }: TSvgList) {
 
 	return (
 		<div className={cn("w-full", className)}>
-			<div className="sticky top-0 z-30 flex min-h-16 flex-col justify-center border-b bg-background/95 backdrop-blur-lg supports-[backdrop-filter]:bg-background/70">
+			<div className="sticky top-0 z-30 flex min-h-16 flex-col justify-center border-b bg-background/95 backdrop-blur-lg supports-backdrop-filter:bg-background/70">
 				<SearchBar
 					count={filteredSvgs.length}
 					setSearchTerm={setSearchTerm}
@@ -213,8 +213,9 @@ export function SvgList({ className }: TSvgList) {
 				{hasMoreResults ? (
 					<div
 						className={cn(
-							"pointer-events-none relative z-16 grid w-full place-items-center items-end bg-gradient-to-t from-background from-30% to-transparent",
-							"-mt-[7rem] h-36",
+							"pointer-events-none relative z-16 grid w-full place-items-center items-end bg-linear-to-t from-background from-30% to-transparent",
+							"-mt-28 h-36",
+							"bg-linear-to-t from-background from-30% to-transparent",
 						)}
 					>
 						<Button
@@ -239,7 +240,7 @@ export function SvgList({ className }: TSvgList) {
 									});
 									setShowAll(false);
 								}}
-								className="pointer-events-auto rounded-full shadow-lg"
+								className="pointer-events-auto rounded-full bg-background/50 shadow-lg backdrop-blur-lg"
 								variant="outline"
 							>
 								<ArrowDown className="size-3 rotate-180" />

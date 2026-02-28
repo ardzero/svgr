@@ -3,7 +3,7 @@ import { Menu, X, Github, Globe, Search, Twitter } from "lucide-react";
 import Fuse from "fuse.js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ModeToggle } from "@/components/ui/theme-selector";
+import { ModeToggle } from "@/components/utils/ModeToggle";
 import { getCategories } from "@/lib/data";
 import { svgsData } from "@/lib/data";
 import { cn } from "@/lib/utils";
@@ -167,7 +167,7 @@ export function Sidebar() {
 				{/* Categories Container */}
 				<div className="flex h-[calc(100dvh-4rem)] flex-col">
 					{/* Sticky All SVGs */}
-					<div className="space-y-2 bg-background/95 p-2 pb-1 backdrop-blur supports-[backdrop-filter]:bg-background/20">
+					<div className="space-y-2 bg-background/95 p-2 pb-1 backdrop-blur supports-backdrop-filter:bg-background/20">
 						<Button
 							variant="secondary"
 							className={cn("w-full font-bold")}

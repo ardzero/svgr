@@ -3,7 +3,7 @@ import { Menu, X, Github, Globe, Search, Twitter } from "lucide-react";
 import Fuse from "fuse.js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ModeToggle } from "@/components/ui/theme-selector";
+import { ModeToggle } from "@/components/utils/ModeToggle";
 import { getCategories } from "@/lib/data";
 import { svgsData } from "@/lib/data";
 import { cn } from "@/lib/utils";

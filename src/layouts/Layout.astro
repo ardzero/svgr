@@ -1,26 +1,27 @@
 ---
-import "@/styles/globals.css";
-import "@/styles/customGlobals.css";
+import "@/styles/global.css";
 // custom fonts https://docs.astro.build/en/guides/fonts/
-import "@fontsource-variable/montserrat";
+// you can change the default font by changing --font-sans in global.css
 
 // https://docs.astro.build/en/guides/view-transitions/#trigger-navigation
 import { ClientRouter } from "astro:transitions";
 
+import type { MetadataProps, ApplicationContextProps } from "@/types";
+// head componets
 import Metadata from "@/components/utils/Metadata.astro";
+import ApplicationContext from "@/components/utils/ApplicationContext.astro";
+// page components
 import PageLoader from "@/components/utils/PageLoader.astro";
+import { ModeToggle } from "@/components/utils/ModeToggle";
+import { ScrollToTopButton } from "@/components/utils/TopButton";
+import { Toaster } from "@/components/ui/sonner";
+import { Sidebar } from "@/components/Sidebar";
 
-import type { MetadataProps } from "@/types";
 interface Props extends MetadataProps {
 	pageLoader?: boolean;
+	applicationContext?: ApplicationContextProps;
 }
-const { pageLoader = true }: Props = Astro.props;
-
-// components
-// import { ModeToggle } from "@/components/ui/theme-selector";
-import { ScrollToTopButton } from "@/components/utils/TopButton";
-import { Toaster } from "@/components/ui/toaster";
-import { Sidebar } from "@/components/Sidebar";
+const { pageLoader = true, applicationContext }: Props = Astro.props;
 ---
 
 <!doctype html>
@@ -30,45 +31,40 @@ import { Sidebar } from "@/components/Sidebar";
 		<meta name="viewport" content="width=device-width" />
 		<!-- https://react-scan.com/ -->
 		<!-- <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> -->
+		<!-- seo and open graph metadata -->
+		<Metadata {...Astro.props} />
+		<!-- application context json (for product seo) -->
+		{applicationContext && <ApplicationContext {...applicationContext} />}
+		<!-- view transitions router -->
 		<ClientRouter />
 		<!-- Theme script, in head to avoid light/dark mode flickering on page change -->
 		<script is:inline>
-			const theme = (() => {
+			const getTheme = () => {
 				if (
 					typeof localStorage !== "undefined" &&
 					localStorage.getItem("theme")
 				) {
 					return localStorage.getItem("theme");
 				}
-				return window.matchMedia("(prefers-color-scheme: dark)").matches
-					? "dark"
-					: "light";
-			})();
+				return "system";
+			};
 
-			document.documentElement.classList[theme === "dark" ? "add" : "remove"](
-				"dark"
-			);
+			const applyTheme = (theme) => {
+				const isDark =
+					theme === "dark" ||
+					(theme === "system" &&
+						window.matchMedia("(prefers-color-scheme: dark)").matches);
+				document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+			};
 
-			if (typeof localStorage !== "undefined") {
-				const observer = new MutationObserver(() => {
-					const isDark = document.documentElement.classList.contains("dark");
-					localStorage.setItem("theme", isDark ? "dark" : "light");
-				});
-				observer.observe(document.documentElement, {
-					attributes: true,
-					attributeFilter: ["class"],
-				});
-			}
+			const theme = getTheme();
+			applyTheme(theme);
 
 			document.addEventListener("astro:after-swap", () => {
-				const theme = localStorage.getItem("theme") ?? "light";
-				document.documentElement.classList[theme === "dark" ? "add" : "remove"](
-					"dark"
-				);
+				const theme = getTheme();
+				applyTheme(theme);
 			});
 		</script>
-
-		<Metadata {...Astro.props} />
 	</head>
 	<body>
 		<div class="flex min-h-screen">
@@ -94,10 +90,6 @@ import { Sidebar } from "@/components/Sidebar";
 </html>
 
 <style>
-	html,
-	body {
-		font-family: "Montserrat Variable", sans-serif;
-	}
 	@keyframes bump {
 		0% {
 			opacity: 0;

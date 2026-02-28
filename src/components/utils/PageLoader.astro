@@ -5,12 +5,12 @@ const { className } = Astro.props;
 
 <div
 	class={cn(
-		"cssload-loader pointer-events-none fixed right-4 bottom-2 flex h-10 w-full max-w-24 flex-col items-center justify-center rounded-2xl border border-foreground/15 bg-zinc-600/50 py-2 shadow-[inset_0_0_39.1px_rgba(255,255,255,0.25)] backdrop-blur-xl md:right-auto md:bottom-6 md:left-1/2 md:-translate-x-1/2 dark:bg-zinc-600/35",
-		className
+		"cssload-loader pointer-events-none fixed bottom-6 left-1/2 flex h-10 w-full max-w-24 -translate-x-1/2 flex-col items-center justify-center rounded-2xl border border-foreground/15 bg-zinc-600/50 py-2 shadow-[inset_0_0_39.1px_rgba(255,255,255,0.25)] backdrop-blur-xl dark:bg-zinc-600/35",
+		className,
 	)}
 	id="page_loading_icon"
 >
-	<img src="/loading-dots.gif" alt="loading" class="size-6" />
+	<img src="/loading-dots.webp" alt="loading" class="size-6" />
 </div>
 
 <script>

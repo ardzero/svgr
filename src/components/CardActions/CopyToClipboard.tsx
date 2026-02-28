@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { CopyIcon, Loader, X, CheckIcon, Check } from "lucide-react";
 import * as Popover from "@radix-ui/react-popover";
@@ -36,7 +36,6 @@ export function CopyToClipboard({
 	localTheme = "system",
 	svgInfo,
 }: TCopyToClipboard) {
-	const { toast } = useToast();
 	const [hasCopied, setHasCopied] = useState(false);
 
 	// Updated getSvgUrl to use localTheme
@@ -79,9 +78,8 @@ export function CopyToClipboard({
 	const copyToClipboard = async () => {
 		const svgUrlToCopy = getSvgUrl();
 		if (!svgUrlToCopy) {
-			toast({
-				title: "Invalid SVG URL",
-				description: `${svgInfo.title}`,
+			toast.error("Invalid SVG URL", {
+				description: `${svgInfo.title} - Invalid SVG URL`,
 			});
 			return;
 		}
@@ -128,8 +126,7 @@ export function CopyToClipboard({
 			// 	description: `${isWordmarkSvg ? "Wordmark of" : ""} ${svgInfo.title}`,
 			// });
 
-			toast({
-				title: "Copied svg to clipboard",
+			toast.success("Copied svg to clipboard", {
 				description: `${isWordmarkSvg ? "Wordmark of" : ""} ${svgInfo.title}${
 					localTheme === "dark" ||
 					(localTheme === "system" &&
@@ -140,9 +137,8 @@ export function CopyToClipboard({
 			});
 		} catch (err) {
 			console.error("Failed to copy:", err);
-			toast({
-				title: "Failed to copy SVG",
-				description: `${svgInfo.title} - ${err}`,
+			toast.error("Failed to copy SVG", {
+				description: `${svgInfo.title} - Failed to copy SVG`,
 			});
 		}
 	};

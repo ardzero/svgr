@@ -1,10 +1,12 @@
 import React, { useCallback, useState, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface FileDropzoneProps {
 	children: React.ReactNode;
 	acceptedFileTypes: string[];
 	dropText: string;
 	setCurrentFile: (file: File) => void;
+	className?: string;
 }
 
 export function FileDropzone({
@@ -12,6 +14,7 @@ export function FileDropzone({
 	acceptedFileTypes,
 	dropText,
 	setCurrentFile,
+	className,
 }: FileDropzoneProps) {
 	const [isDragging, setIsDragging] = useState(false);
 	const dragCounter = useRef(0);
@@ -80,12 +83,12 @@ export function FileDropzone({
 			onDragLeave={handleDragOut}
 			onDragOver={handleDrag}
 			onDrop={handleDrop}
-			className="h-full w-full"
+			className={cn("h-full w-full", className)}
 		>
 			{isDragging && (
-				<div className="fixed inset-0 z-[100] flex items-center justify-center lg:ml-[250px]">
+				<div className="fixed inset-0 z-100 flex items-center justify-center lg:ml-[250px]">
 					<div className="absolute inset-0 bg-background/80 backdrop-blur-lg" />
-					<div className="relative flex h-[90%] w-[90%] transform items-center justify-center rounded-xl border-2 border-dashed border-foreground/30 transition-all duration-200 ease-out animate-in fade-in zoom-in">
+					<div className="relative flex h-[90%] w-[90%] transform animate-in items-center justify-center rounded-xl border-2 border-dashed border-foreground/30 transition-all duration-200 ease-out fade-in zoom-in">
 						<p className="text-2xl font-semibold text-foreground">{dropText}</p>
 					</div>
 				</div>

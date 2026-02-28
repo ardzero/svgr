@@ -4,7 +4,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 import {
 	type FileUploaderResult,
@@ -13,6 +13,7 @@ import {
 import { UploadBox } from "@/components/tools/shared/upload-box";
 import { SVGScaleSelector } from "@/components/tools/svg-scale-selector";
 import { FileDropzone } from "@/components/tools/shared/file-dropzone";
+import { cn } from "@/lib/utils";
 
 export type Scale = "custom" | number;
 
@@ -153,7 +154,6 @@ function SaveAsPngButton({
 }
 
 function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
-	const { toast } = useToast();
 	const {
 		rawContent,
 		imageMetadata,
@@ -224,19 +224,14 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 			}
 
 			if (!foundValidContent) {
-				toast({
-					variant: "destructive",
-					title: "Error",
+				toast.error("No valid SVG content found in clipboard", {
 					description: "No valid SVG content found in clipboard",
 				});
 			}
 		} catch (error) {
-			toast({
-				variant: "destructive",
-				title: "Error",
+			toast.error("Failed to paste SVG content", {
 				description: "Failed to paste SVG content",
 			});
-			console.error("Paste error:", error);
 		}
 	};
 
@@ -279,18 +274,12 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 								handleFileUpload(file);
 								return;
 							} else {
-								toast({
-									variant: "destructive",
-									title: "Error",
+								toast.error("Error", {
 									description: "No valid SVG content found in clipboard",
 								});
 							}
 						} catch (error) {
-							toast({
-								variant: "destructive",
-								title: "Error",
-								description: "Failed to read clipboard",
-							});
+							toast.error("Failed to read clipboard");
 							console.error("Clipboard error:", error);
 						}
 					}}
@@ -377,13 +366,14 @@ function SVGToolCore(props: { fileUploaderProps: FileUploaderResult }) {
 	);
 }
 
-export function SVGTool() {
+export function SVGTool({ className }: { className?: string }) {
 	const fileUploaderProps = useFileUploader();
 	return (
 		<FileDropzone
 			setCurrentFile={fileUploaderProps.handleFileUpload}
 			acceptedFileTypes={["image/svg+xml", ".svg"]}
 			dropText="Drop or paste SVG file"
+			className={cn(className)}
 		>
 			<SVGToolCore fileUploaderProps={fileUploaderProps} />
 		</FileDropzone>

@@ -1,36 +1,51 @@
 ---
 import type { MetadataProps } from "@/types";
+import { removeDuplicates } from "@/lib/utils";
 interface Props extends MetadataProps {}
 import {
-  siteData,
-  twitterMetaData as twMetaData,
-  icons,
+	siteData,
+	twitterMetaData as twMetaData,
+	icons,
 } from "@/lib/data/siteData";
 const {
-  url = Astro.url,
-  title,
-  description,
-  robots = siteData.robotsDefault,
-  keywords = siteData.keywords,
-  ogTitle,
-  ogImage,
-  author,
-  metadataColor,
-  metadataIcons,
+	url = Astro.url,
+	title,
+	description,
+	robots = siteData.robotsDefault,
+	keywords,
+	ogTitle,
+	ogImage,
+	author,
+	metadataColor,
+	metadataIcons,
+	titleSuffix = true,
 }: Props = Astro.props;
 
-let siteTitle = title ? `${title} / ${siteData.name}` : siteData.name;
+let siteTitle = title
+	? `${title}${titleSuffix ? ` - ${siteData.name}` : ""}`
+	: siteData.name;
+
+// combines keywords from the page with the site keywords
+let siteKeywords = keywords
+	? removeDuplicates(keywords, siteData.keywords)
+	: siteData.keywords;
+
+// Convert robots object to string for meta tag content
+let robotsString = [
+	robots.index ? "index" : "noindex",
+	robots.follow ? "follow" : "nofollow",
+].join(", ");
 ---
 
 <meta
-  name="theme-color"
-  media="(prefers-color-scheme: light)"
-  content={metadataColor?.light || siteData.metadata_color.light}
+	name="theme-color"
+	media="(prefers-color-scheme: light)"
+	content={metadataColor?.light || siteData.metadata_color.light}
 />
 <meta
-  name="theme-color"
-  media="(prefers-color-scheme: dark)"
-  content={metadataColor?.dark || siteData.metadata_color.dark}
+	name="theme-color"
+	media="(prefers-color-scheme: dark)"
+	content={metadataColor?.dark || siteData.metadata_color.dark}
 />
 
 <title>{siteTitle}</title>
@@ -38,10 +53,10 @@ let siteTitle = title ? `${title} / ${siteData.name}` : siteData.name;
 <meta name="author" content={author?.name || siteData.author.name} />
 <link rel="author" href={author?.url || siteData.author.url} />
 <link rel="manifest" href="/site.webmanifest" />
-<meta name="keywords" content={keywords.join(", ")} />
+<meta name="keywords" content={siteKeywords.join(", ")} />
 <meta name="creator" content={author?.name || siteData.author.name} />
 <meta name="publisher" content={siteData.publisher} />
-<meta name="robots" content={robots} />
+<meta name="robots" content={robotsString} />
 <link rel="canonical" href={url} />
 
 <!-- og metadata -->
@@ -53,12 +68,12 @@ let siteTitle = title ? `${title} / ${siteData.name}` : siteData.name;
 <meta property="og:image" content={ogImage?.src || siteData.ogImage.src} />
 <meta property="og:image:url" content={ogImage?.src || siteData.ogImage.src} />
 <meta
-  property="og:image:width"
-  content={ogImage?.width?.toString() || siteData.ogImage.width?.toString()}
+	property="og:image:width"
+	content={ogImage?.width?.toString() || siteData.ogImage.width?.toString()}
 />
 <meta
-  property="og:image:height"
-  content={ogImage?.height?.toString() || siteData.ogImage.height?.toString()}
+	property="og:image:height"
+	content={ogImage?.height?.toString() || siteData.ogImage.height?.toString()}
 />
 <meta property="og:image:alt" content={ogImage?.alt || siteData.ogImage.alt} />
 <meta property="og:type" content="website" />
@@ -69,8 +84,8 @@ let siteTitle = title ? `${title} / ${siteData.name}` : siteData.name;
 <meta name="twitter:creator" content={author?.name || twMetaData.creator} />
 <meta name="twitter:title" content={title || twMetaData.title} />
 <meta
-  name="twitter:description"
-  content={description || twMetaData.description}
+	name="twitter:description"
+	content={description || twMetaData.description}
 />
 <meta name="twitter:image" content={ogImage?.src || twMetaData.image} />
 <meta name="twitter:image:alt" content={ogImage?.alt || twMetaData.title} />
