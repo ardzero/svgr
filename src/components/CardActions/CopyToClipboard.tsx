@@ -163,10 +163,10 @@ export function CopyToClipboard({
 					strokeWidth={iconStroke}
 				/>
 			)} */}
-			<div className={cn("relative size-4 h-full w-full transition-all")}>
+			<div className="relative size-4 h-full w-full">
 				<Check
 					className={cn(
-						"absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] stroke-emerald-500 transition-all",
+						"absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] stroke-emerald-500 transition-[transform,opacity] duration-150",
 						iconClassName,
 						hasCopied ? "scale-100 opacity-100" : "scale-0 opacity-0",
 					)}
@@ -179,7 +179,7 @@ export function CopyToClipboard({
 					strokeWidth={2}
 					aria-hidden="true"
 					className={cn(
-						"absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transition-all",
+						"absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transition-[transform,opacity] duration-150",
 						hasCopied ? "scale-0 opacity-0" : "scale-100 opacity-100",
 					)}
 				/>

@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 const buttonClassName =
-	"relative z-10 flex flex-col items-center justify-between p-2 hover:text-accent-foreground cursor-pointer transition-colors";
+	"relative z-10 flex flex-col items-center justify-between p-2 hover:text-accent-foreground cursor-pointer transition-[background-color]";
 
 export function ModeToggle({
 	className,
