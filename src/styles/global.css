@@ -12,14 +12,10 @@
 }
 @media (min-width: 1600px) {
 	:root {
-		font-size: 17px;
+		font-size: 16px;
 	}
 }
-@media (min-width: 1800px) {
-	:root {
-		font-size: 18px;
-	}
-}
+
 @theme inline {
 	/* fonts, font sans is the defualt body font (you can change that at the bottom of this file)*/
 	--font-sans: "Satoshi", sans-serif;
@@ -272,10 +268,10 @@
 		--card-foreground: oklch(0.141 0.005 285.823);
 		--popover: oklch(1 0 0);
 		--popover-foreground: oklch(0.141 0.005 285.823);
-		--primary: #1d58b3;
-		--primary-foreground: oklch(0.985 0 0);
-		--secondary: oklch(0.967 0.001 286.375);
-		--secondary-foreground: oklch(0.21 0.006 285.885);
+		--primary: oklch(0.43 0.04 42);
+		--primary-foreground: oklch(1 0 0);
+		--secondary: oklch(0.92 0.07 76.67);
+		--secondary-foreground: oklch(0.35 0.07 41.41);
 		--muted: oklch(0.967 0.001 286.375);
 		--muted-foreground: oklch(0.552 0.016 285.938);
 		--accent: oklch(0.967 0.001 286.375);
@@ -308,10 +304,10 @@
 		--card-foreground: oklch(0.985 0 0);
 		--popover: oklch(0.21 0.006 285.885);
 		--popover-foreground: oklch(0.985 0 0);
-		--primary: #1d58b3;
-		--primary-foreground: #ffff;
-		--secondary: oklch(0.274 0.006 286.033);
-		--secondary-foreground: oklch(0.985 0 0);
+		--primary: oklch(0.92 0.05 67.14);
+		--primary-foreground: oklch(0.2 0.02 201.14);
+		--secondary: oklch(0.32 0.02 67);
+		--secondary-foreground: oklch(0.92 0.05 67.14);
 		--muted: oklch(0.274 0.006 286.033);
 		--muted-foreground: oklch(0.705 0.015 286.067);
 		--accent: oklch(0.274 0.006 286.033);
@@ -336,10 +332,11 @@
 		--sidebar-border: oklch(1 0 0 / 10%);
 		--sidebar-ring: oklch(0.552 0.016 285.938);
 	}
+
 	* {
 		@apply border-border outline-ring/50;
 	}
 	body {
-		@apply overflow-x-clip bg-background font-sans text-foreground antialiased;
+		@apply bg-background text-foreground overflow-x-clip font-sans antialiased;
 	}
 }

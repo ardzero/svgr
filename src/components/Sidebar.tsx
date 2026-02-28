@@ -4,6 +4,7 @@ import Fuse from "fuse.js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/utils/ModeToggle";
+import { Kbd } from "@/components/ui/kbd";
 import { getCategories } from "@/lib/data";
 import { svgsData } from "@/lib/data";
 import { cn } from "@/lib/utils";
@@ -139,7 +140,7 @@ export function Sidebar() {
 				id="sidebar-toggle"
 				variant="ghost"
 				size="icon"
-				className="fixed top-3 left-1 z-50 lg:hidden"
+				className="fixed left-1 top-3 z-50 lg:hidden"
 				onClick={() => setIsOpen(!isOpen)}
 			>
 				{isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -149,8 +150,8 @@ export function Sidebar() {
 			<aside
 				id="sidebar"
 				className={cn(
-					"fixed inset-y-0 left-0 z-40 w-64 transform border-r bg-background/75",
-					"backdrop-blur-lg transition-transform md:bg-background/95 md:backdrop-blur-none lg:translate-x-0",
+					"bg-background/75 fixed inset-y-0 left-0 z-40 w-64 transform border-r",
+					"md:bg-background/95 backdrop-blur-lg transition-transform md:backdrop-blur-none lg:translate-x-0",
 					!isOpen && "-translate-x-full",
 				)}
 			>
@@ -160,14 +161,14 @@ export function Sidebar() {
 						<img src="/favicon.svg" alt="Svgr" className="size-6" />
 						<span className="-mb-4 text-xl font-bold">Svgr</span>
 
-						<span className="-mb-4 text-xs text-muted-foreground">(v0.5)</span>
+						<span className="text-muted-foreground -mb-4 text-xs">(v0.5)</span>
 					</a>
 				</div>
 
 				{/* Categories Container */}
 				<div className="flex h-[calc(100dvh-4rem)] flex-col">
 					{/* Sticky All SVGs */}
-					<div className="space-y-2 bg-background/95 p-2 pb-1 backdrop-blur supports-backdrop-filter:bg-background/20">
+					<div className="bg-background/95 supports-backdrop-filter:bg-background/20 space-y-2 p-2 pb-1 backdrop-blur">
 						<Button
 							variant="secondary"
 							className={cn("w-full font-bold")}
@@ -182,15 +183,15 @@ export function Sidebar() {
 									<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
 									<span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
 								</div> */}
-								<div className="absolute -top-1 -right-2 rounded-md bg-emerald-500 px-2 py-0.5 text-xs text-black">
+								{/* <div className="absolute -right-2 -top-1 rounded-md bg-emerald-500 px-2 py-0.5 text-xs text-black">
 									New
-								</div>
+								</div> */}
 								SVG &gt; PNG Converter{" "}
-								<span className="text-xs text-muted-foreground">(⌘ Q)</span>
+								<Kbd className="bg-primary/25 text-foreground">⌘ Q</Kbd>
 							</a>
 						</Button>
 						<div className="relative">
-							<Search className="absolute top-2.5 left-2 size-4 text-muted-foreground" />
+							<Search className="text-muted-foreground absolute left-2 top-2.5 size-4" />
 							<Input
 								placeholder={`Search ${categories.length} categories...`}
 								value={search}
@@ -209,7 +210,7 @@ export function Sidebar() {
 						>
 							<span>All SVGs</span>
 
-							<span className="text-xs text-muted-foreground">
+							<span className="text-muted-foreground text-xs">
 								{totalCount}
 								<span className="ml-1">(⌘ A)</span>
 							</span>
@@ -231,7 +232,7 @@ export function Sidebar() {
 										onClick={() => handleCategoryClick(category)}
 									>
 										<span>{category}</span>
-										<span className="text-xs text-muted-foreground">
+										<span className="text-muted-foreground text-xs">
 											{categoryCounts[category]}
 										</span>
 									</Button>
