@@ -38,9 +38,13 @@ export function ModeToggle({
 			theme === "dark" ||
 			(theme === "system" &&
 				window.matchMedia("(prefers-color-scheme: dark)").matches);
-		document.documentElement.classList[isDark ? "add" : "remove"]("dark");
-		document.documentElement.style.colorScheme = isDark ? "dark" : "light";
 		localStorage.setItem("theme", theme);
+		// Defer DOM update to next frame to avoid blocking; reduces theme-switch lag when many nodes (e.g. SVG list) are in the tree
+		const raf = requestAnimationFrame(() => {
+			document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+			document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+		});
+		return () => cancelAnimationFrame(raf);
 	}, [theme]);
 
 	// Calculate position for sliding background

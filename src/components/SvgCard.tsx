@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { iSVG } from "@/types/svg";
-import { useState } from "react";
+import { memo, useState } from "react";
 import {
 	ArrowUpRight,
 	Baseline,
@@ -26,7 +26,7 @@ type TSvgCard = {
 	searchTerm?: string;
 };
 
-export function SvgCard({ className, svg }: TSvgCard) {
+function SvgCardInner({ className, svg }: TSvgCard) {
 	const [wordmarkSvg, setWordmarkSvg] = useState(false);
 	const [localTheme, setLocalTheme] = useState<"system" | "light" | "dark">(
 		"system",
@@ -289,3 +289,5 @@ export function SvgCard({ className, svg }: TSvgCard) {
 		</div>
 	);
 }
+
+export const SvgCard = memo(SvgCardInner);

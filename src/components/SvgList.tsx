@@ -1,6 +1,6 @@
 import type { iSVG } from "@/types/svg";
-import { useState, useEffect, useMemo } from "react";
-
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import Fuse from "fuse.js";
 import { cn } from "@/lib/utils";
 import { svgsData } from "@/lib/data";
@@ -12,6 +12,17 @@ import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/SearchBar";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import type { Tcategory } from "@/types/categories";
+
+const VIRTUALIZE_THRESHOLD = 50;
+const ROW_HEIGHT_ESTIMATE = 236;
+
+function getColumnCount(width: number) {
+	if (width >= 1280) return 6;
+	if (width >= 1024) return 4;
+	if (width >= 600) return 3;
+	if (width >= 380) return 2;
+	return 1;
+}
 
 type TSvgList = {
 	className?: string;
@@ -25,6 +36,16 @@ export function SvgList({ className }: TSvgList) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [sorted, setSorted] = useState(false);
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
+	const [columnCount, setColumnCount] = useState(() =>
+		getColumnCount(typeof window !== "undefined" ? window.innerWidth : 1280),
+	);
+	const [scrollMargin, setScrollMargin] = useState(0);
+	const gridContainerRef = useRef<HTMLDivElement>(null);
+
+	const useVirtualizedGrid = displaySvgs.length > VIRTUALIZE_THRESHOLD;
+	const rowCount = useVirtualizedGrid
+		? Math.ceil(displaySvgs.length / columnCount)
+		: 0;
 
 	// Memoized data
 	const allSvgs = useMemo(() => JSON.parse(JSON.stringify(svgsData)), []);
@@ -146,6 +167,39 @@ export function SvgList({ className }: TSvgList) {
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, []);
 
+	// Responsive column count for virtualized grid
+	useEffect(() => {
+		const updateColumns = () => setColumnCount(getColumnCount(window.innerWidth));
+		updateColumns();
+		window.addEventListener("resize", updateColumns);
+		return () => window.removeEventListener("resize", updateColumns);
+	}, []);
+
+	// Measure scroll margin for window virtualizer (offset of grid from top of document)
+	useEffect(() => {
+		if (!useVirtualizedGrid || !gridContainerRef.current) return;
+		const el = gridContainerRef.current;
+		const updateMargin = () => {
+			setScrollMargin(el.getBoundingClientRect().top + window.scrollY);
+		};
+		updateMargin();
+		const ro = new ResizeObserver(updateMargin);
+		ro.observe(el);
+		window.addEventListener("scroll", updateMargin, { passive: true });
+		return () => {
+			ro.disconnect();
+			window.removeEventListener("scroll", updateMargin);
+		};
+	}, [useVirtualizedGrid]);
+
+	const virtualizer = useWindowVirtualizer({
+		count: rowCount,
+		estimateSize: () => ROW_HEIGHT_ESTIMATE,
+		overscan: 2,
+		scrollMargin: scrollMargin,
+		getScrollElement: useCallback(() => window, []),
+	});
+
 	const searchResults = getFilteredSvgs(searchTerm, activeCategory);
 	const hasMoreResults = !showAll && searchResults.length > 30;
 
@@ -161,7 +215,10 @@ export function SvgList({ className }: TSvgList) {
 				/>
 			</div>
 
-			<section className="mx-auto mt-2 mb-4 px-4 lg:px-6">
+			<section
+				ref={gridContainerRef}
+				className="mx-auto mt-2 mb-4 px-4 lg:px-6"
+			>
 				<div
 					className={cn(
 						"mb-4 flex items-center justify-end",
@@ -194,19 +251,69 @@ export function SvgList({ className }: TSvgList) {
 					)}
 				</div>
 
-				<div className="relative mt-4 grid gap-4 min-[380px]:grid-cols-2 min-[600px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+				<div className="relative mt-4">
 					{isLoading ? (
-						Array(30)
-							.fill(0)
-							.map((_, index) => <SkeletonCard key={index} />)
+						<div className="grid gap-4 min-[380px]:grid-cols-2 min-[600px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+							{Array(30)
+								.fill(0)
+								.map((_, index) => (
+									<SkeletonCard key={index} />
+								))}
+						</div>
 					) : displaySvgs.length === 0 ? (
-						<div className="col-span-full flex min-h-[65vh] items-center justify-center">
+						<div className="flex min-h-[65vh] items-center justify-center">
 							<NotFound notFoundTerm={searchTerm} />
 						</div>
+					) : useVirtualizedGrid ? (
+						<div
+							style={{
+								height: `${virtualizer.getTotalSize()}px`,
+								width: "100%",
+								position: "relative",
+							}}
+						>
+							{virtualizer.getVirtualItems().map((row) => {
+								const start = row.index * columnCount;
+								const rowSvgs = displaySvgs.slice(
+									start,
+									start + columnCount,
+								);
+								return (
+									<div
+										key={row.key}
+										style={{
+											position: "absolute",
+											top: 0,
+											left: 0,
+											width: "100%",
+											transform: `translateY(${
+												row.start - virtualizer.options.scrollMargin
+											}px)`,
+										}}
+									>
+										<div className="grid gap-4 min-[380px]:grid-cols-2 min-[600px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+											{rowSvgs.map((svg) => (
+												<SvgCard
+													key={svg.id}
+													svg={svg}
+													searchTerm={searchTerm}
+												/>
+											))}
+										</div>
+									</div>
+								);
+							})}
+						</div>
 					) : (
-						displaySvgs.map((svg) => (
-							<SvgCard key={svg.id} svg={svg} searchTerm={searchTerm} />
-						))
+						<div className="grid gap-4 min-[380px]:grid-cols-2 min-[600px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+							{displaySvgs.map((svg) => (
+								<SvgCard
+									key={svg.id}
+									svg={svg}
+									searchTerm={searchTerm}
+								/>
+							))}
+						</div>
 					)}
 				</div>
 
