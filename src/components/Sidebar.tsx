@@ -88,12 +88,12 @@ export function Sidebar() {
 	useEffect(() => {
 		const handleKeyPress = (e: KeyboardEvent) => {
 			// Command/Control + P to navigate to PNG converter
-			if ((e.metaKey || e.ctrlKey) && e.key === "q") {
+			if ((e.metaKey || e.ctrlKey) && e.key === "l") {
 				e.preventDefault();
 				window.location.href = "/svg-to-png";
 			}
 			// Command/Control + K to focus All SVGs
-			if ((e.metaKey || e.ctrlKey) && e.key === "a") {
+			if ((e.metaKey || e.ctrlKey) && e.key === "j") {
 				e.preventDefault();
 				handleCategoryClick(null);
 			}
@@ -172,7 +172,7 @@ export function Sidebar() {
 						<Button
 							variant="secondary"
 							className={cn("w-full font-bold")}
-							title="Keyboard shortcut: Ctrl/Cmd + Q"
+							title="Keyboard shortcut: Ctrl/Cmd + C"
 							asChild
 						>
 							<a
@@ -187,7 +187,7 @@ export function Sidebar() {
 									New
 								</div> */}
 								SVG &gt; PNG Converter{" "}
-								<Kbd className="bg-primary/25 text-foreground">⌘ Q</Kbd>
+								<Kbd className="bg-primary/25 text-foreground">⌘ L</Kbd>
 							</a>
 						</Button>
 						<div className="relative">
@@ -206,13 +206,13 @@ export function Sidebar() {
 								activeCategory === null && "bg-muted",
 							)}
 							onClick={() => handleCategoryClick(null)}
-							title="Keyboard shortcut: Ctrl/Cmd + A"
+							title="Keyboard shortcut: Ctrl/Cmd + J"
 						>
 							<span>All SVGs</span>
 
 							<span className="text-muted-foreground text-xs">
 								{totalCount}
-								<span className="ml-1">(⌘ A)</span>
+								<span className="ml-1">(⌘ J)</span>
 							</span>
 						</Button>
 					</div>

@@ -13,6 +13,7 @@ import {
 import { UploadBox } from "@/components/tools/shared/upload-box";
 import { SVGScaleSelector } from "@/components/tools/svg-scale-selector";
 import { FileDropzone } from "@/components/tools/shared/file-dropzone";
+import { getSvgDimensions } from "@/lib/utils/svg-dimensions";
 import { cn } from "@/lib/utils";
 
 export type Scale = "custom" | number;
@@ -21,8 +22,7 @@ function scaleSvg(svgContent: string, scale: number) {
 	const parser = new DOMParser();
 	const svgDoc = parser.parseFromString(svgContent, "image/svg+xml");
 	const svgElement = svgDoc.documentElement;
-	const width = parseInt(svgElement.getAttribute("width") ?? "300");
-	const height = parseInt(svgElement.getAttribute("height") ?? "150");
+	const { width, height } = getSvgDimensions(svgElement);
 
 	const scaledWidth = width * scale;
 	const scaledHeight = height * scale;
@@ -50,36 +50,51 @@ function useSvgConverter(props: {
 		};
 	}, [props.svgContent, props.scale, props.imageMetadata]);
 
-	const convertToPng = async () => {
+	const drawToCanvas = (onDone: () => void) => {
 		const ctx = props.canvas?.getContext("2d");
 		if (!ctx) throw new Error("Failed to get canvas context");
 
-		// Trigger a "save image" of the resulting canvas content
-		const saveImage = () => {
+		const img = new Image();
+		img.onload = () => {
+			ctx.drawImage(img, 0, 0);
+			onDone();
+		};
+		img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(scaledSvg)}`;
+	};
+
+	const convertToPng = () => {
+		drawToCanvas(() => {
 			if (props.canvas) {
 				const dataURL = props.canvas.toDataURL("image/png");
 				const link = document.createElement("a");
 				link.href = dataURL;
 				const svgFileName = props.imageMetadata.name ?? "svg_converted";
-
-				// Remove the .svg extension
 				link.download = `${svgFileName.replace(".svg", "")}-${props.scale}x.png`;
 				link.click();
 			}
-		};
+		});
+	};
 
-		const img = new Image();
-		// Call saveImage after the image has been drawn
-		img.onload = () => {
-			ctx.drawImage(img, 0, 0);
-			saveImage();
-		};
-
-		img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(scaledSvg)}`;
+	const copyToClipboard = () => {
+		drawToCanvas(async () => {
+			if (!props.canvas) return;
+			try {
+				props.canvas.toBlob(async (blob) => {
+					if (!blob) return;
+					await navigator.clipboard.write([
+						new ClipboardItem({ "image/png": blob }),
+					]);
+					toast.success("PNG copied to clipboard");
+				}, "image/png");
+			} catch {
+				toast.error("Failed to copy to clipboard");
+			}
+		});
 	};
 
 	return {
 		convertToPng,
+		copyToClipboard,
 		canvasProps: { width: width, height: height },
 	};
 }
@@ -116,33 +131,43 @@ function SaveAsPngButton({
 	imageMetadata: { width: number; height: number; name: string };
 }) {
 	const [canvasRef, setCanvasRef] = useState<HTMLCanvasElement | null>(null);
-	const { convertToPng, canvasProps } = useSvgConverter({
+	const { convertToPng, copyToClipboard, canvasProps } = useSvgConverter({
 		canvas: canvasRef,
 		svgContent,
 		scale,
 		imageMetadata,
 	});
 
-	// Add keyboard shortcut effect
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
-			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
-				e.preventDefault();
-				void convertToPng();
+			if (e.ctrlKey || e.metaKey) {
+				if (e.key.toLowerCase() === "s") {
+					e.preventDefault();
+					void convertToPng();
+				} else if (e.key.toLowerCase() === "c") {
+					e.preventDefault();
+					void copyToClipboard();
+				}
 			}
 		};
 
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [convertToPng]);
+	}, [convertToPng, copyToClipboard]);
 
 	return (
-		<div>
+		<div className="flex flex-wrap justify-center gap-3">
 			<canvas ref={setCanvasRef} {...canvasProps} hidden />
 			<button
-				onClick={() => {
-					void convertToPng();
-				}}
+				onClick={() => void copyToClipboard()}
+				className="focus:ring-opacity-75 rounded bg-muted px-4 py-2 text-sm font-semibold text-foreground shadow-md transition-colors duration-200 hover:bg-muted/80 focus:ring-2 focus:ring-primary focus:outline-none"
+				title="Keyboard shortcut: Ctrl/Cmd + C"
+			>
+				Copy PNG
+				<kbd className="ml-2">(⌘ C)</kbd>
+			</button>
+			<button
+				onClick={() => void convertToPng()}
 				className="focus:ring-opacity-75 rounded bg-green-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-colors duration-200 hover:bg-green-800 focus:ring-2 focus:ring-green-400 focus:outline-none"
 				title="Keyboard shortcut: Ctrl/Cmd + S"
 			>

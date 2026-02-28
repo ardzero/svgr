@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import { type ChangeEvent, useState } from "react";
+import { getSvgDimensions } from "@/lib/utils/svg-dimensions";
 import { useClipboardPaste } from "./use-clipboard-paste";
 
 const parseSvgFile = (content: string, fileName: string) => {
     const parser = new DOMParser();
     const svgDoc = parser.parseFromString(content, "image/svg+xml");
     const svgElement = svgDoc.documentElement;
-    const width = parseInt(svgElement.getAttribute("width") ?? "300");
-    const height = parseInt(svgElement.getAttribute("height") ?? "150");
+    const { width, height } = getSvgDimensions(svgElement);
 
     // Convert SVG content to a data URL
     const svgBlob = new Blob([content], { type: "image/svg+xml" });
