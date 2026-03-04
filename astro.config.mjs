@@ -8,7 +8,7 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
 	// must include https:// in the url
-	site: "https://svgr.ardastroid.com",
+	site: "https://svgr.ardzero.com",
 	integrations: [react(), sitemap()],
 
 	vite: {
